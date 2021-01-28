@@ -29,7 +29,7 @@ R_1450 = np.zeros(len(lam_rest_b1450))
 R_1450[(lam_rest_b1450>=1400.*u.AA) & (lam_rest_b1450<=1500.*u.AA)] = 1
 
 #Load the LSST filter curves
-filters = ['u', 'g', 'r', 'i', 'z']
+filters = ['u', 'g', 'r', 'i', 'z', 'y']
 filtercurve = dict()
 for filter in filters:
     data = np.loadtxt("LSST_LSST.{}.dat".format(filter), skiprows=1)
