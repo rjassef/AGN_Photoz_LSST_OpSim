@@ -10,6 +10,14 @@ import Shen20
 import lrt
 import SED_Model
 
+#Setup the cosmology file.
+cosmo_file = open("cosmo.dat","w")
+cosmo_file.write("{}\n".format(cosmo.Om0)) #Omega_Matter
+cosmo_file.write("{}\n".format(1.0-cosmo.Om0)) #Omega_Lambda
+cosmo_file.write("{}\n".format(0.0)) #Omega_k
+cosmo_file.write("{}\n".format(cosmo.H0.value)) #H0
+cosmo_file.close()
+
 #Start by getting L1450 for an Lstar quasar.
 qlf = Shen20.QLF(model="B")
 
