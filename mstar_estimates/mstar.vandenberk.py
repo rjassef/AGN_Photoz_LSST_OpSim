@@ -15,12 +15,8 @@ import pysynphot as S
 import Shen20
 
 
-#Start by getting L1450 for an Lstar quasar.
+#Define the qlf.
 qlf = Shen20.QLF(model="B")
-z = 2.5
-Lbol = 10.**(qlf.log_Lstar(z))*qlf.Lstar_units
-nu_1450 = c/(1450.*u.AA)
-Lnu_1450 = (qlf.L1450(Lbol)/nu_1450).to(u.erg/u.s/u.Hz)
 
 #Now, load the vanden Brek composite.
 #Read the spectrum.
@@ -54,6 +50,11 @@ for k,z in enumerate(zs):
     #Setup the redshifted 1450A band.
     UV_band = S.ArrayBandpass(lam_rest_b1450.to(u.AA).value*(1.+z), R_1450, name='UV_band')
 
+    #Get L1450 for an L* quasar.
+    Lbol = 10.**(qlf.log_Lstar(z))*qlf.Lstar_units
+    nu_1450 = c/(1450.*u.AA)
+    Lnu_1450 = (qlf.L1450(Lbol)/nu_1450).to(u.erg/u.s/u.Hz)
+
     #Estimate the observed flux at 1450A for an L* galaxy and renormalize the observed spectrum to match that.
     DL = cosmo.luminosity_distance(z)
     fnu_1450 = (Lnu_1450 * (1.+z) / (4.*np.pi*DL**2)).to(u.erg/u.s/u.cm**2/u.Hz)
@@ -73,7 +74,7 @@ for k,z in enumerate(zs):
 output = np.zeros((len(zs),len(filters)+1))
 output[:,0] = zs
 output[:,1:]  = mstar
-np.savetxt("mstar_z.dat",output,fmt='%15.5f')
+np.savetxt("mstar_z.vandenberk.dat",output,fmt='%15.5f')
 
 import matplotlib.pyplot as plt
 for j,filter in enumerate(filters):
@@ -81,7 +82,8 @@ for j,filter in enumerate(filters):
     plt.plot(zs[cond],mstar[cond,j],label='lsst'+filter)
 plt.legend()
 plt.xscale('log')
+plt.ylim([13.,25.])
 plt.xlabel('Redshift')
 plt.ylabel('Observed magnitude of L* quasar (AB)')
 plt.title('vanden Berk et al. composite, Shen et al. QLF')
-plt.savefig('mstar_z.png')
+plt.savefig('mstar_z.vandenberk.png')
