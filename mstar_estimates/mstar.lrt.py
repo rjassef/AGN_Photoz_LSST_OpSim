@@ -10,6 +10,35 @@ import Shen20
 import lrt
 import SED_Model
 
+###
+
+class lrt_model2(SED_Model.lrt_model):
+
+    def Lnu(self, lam):
+        if self.comp is None:
+            print("Must fit or provide comp before calculating ahat")
+            return
+        #Check some redshift is provided.
+        self.z = self.zspec
+        if self.z==None or self.z<0.:
+            self.z = self.zspec
+            if self.zphot==None:
+                print("Must provide a redshift or run pz_fit.")
+                return
+            else:
+                self.z = self.zphot
+        #Check kc has been initialized.
+        if self._kcinit == False:
+            lrt.kcinit("bandmag.dat",1,1,1,self.iverbose)
+            self.nchan = lrt.data1b.nchan
+            self._kcinit = True
+            self._pzinit = False
+        #Calculate L5100. Note this is lam*L_lam
+        return lrt.get_lnu(self.comp,self.z,lam)
+
+
+###
+
 #Setup the cosmology file.
 cosmo_file = open("cosmo.dat","w")
 cosmo_file.write("{}\n".format(cosmo.Om0)) #Omega_Matter
@@ -35,29 +64,29 @@ Lnu1450_unnorm = None
 for k,z in enumerate(zs):
 
     #Create the qso object.
-    qso = SED_Model.lrt_model()
+    qso = lrt_model2()
     qso.zspec = z
     qso.comp = np.zeros(4)
     qso.comp[0] = 1.0
-    qso.ebv = 0
+    qso.ebv = 0.0
     qso.igm = 1.0
 
-    #Get the unnormalized observed magnitudes.
-    qso.get_model_fluxes()
-    mag_unnorm = -2.5*np.log10(qso.jymod/jyzero)
-
     #Get the qso Lnu_1450
-    if Lnu1450_unnorm is None:
-        Lnu1450_unnorm = lrt.get_lnu(qso.comp,qso.zspec,0.145)*u.erg/u.s/u.Hz
+    Lnu1450_unnorm = qso.Lnu(0.145)*u.erg/u.s/u.Hz
 
     #Get L1450 for an L* quasar.
     Lbol = 10.**(qlf.log_Lstar(z))*qlf.Lstar_units
     nu_1450 = c/(1450.*u.AA)
     Lnu_1450 = (qlf.L1450(Lbol)/nu_1450).to(u.erg/u.s/u.Hz)
 
-    #Normalize the magnitudes
-    norm = -2.5*np.log10(Lnu_1450/Lnu1450_unnorm)
-    mstar[k] = mag_unnorm + norm
+    #Normalize the component luminosities.
+    qso.comp *= (Lnu_1450/Lnu1450_unnorm).to(1.).value
+
+    #Get the unnormalized observed magnitudes.
+    qso.get_model_fluxes()
+    mstar[k] = -2.5*np.log10(qso.jymod/jyzero)
+
+    #Do not provide magnitudes for bands that potentially do not overlap with the templates.
     cond = lrt.cal1.lbar[:len(filters)]/(1.+qso.zspec) < 0.09
     mstar[k, cond] = 99.
 
