@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import re
+import astropy.units as u
 
 #Routines adapted from the DRC plot routines from Gordon Richard's group DCR RNAAS paper at: https://github.com/RichardsGroup/LSST_DCR/blob/main/notebooks/02_RNAAS.ipynb
 
@@ -27,9 +29,20 @@ def get_metric_medians(key, bd, data_func):
 
     return mds
 
-def plot_OpSims_hist(Key, bundleDicts, order_func=get_metric_medians, data_func=None, 
-                     color_map=mpl.cm.summer, xlabel=None, healpix_pixarea=54.967783, 
-                     figsize=(10, 15), dpi=200):
+def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data_func=None, 
+                     color_map=mpl.cm.summer, xlabel=None, healpix_pixarea=6.391586616190171e-05*u.sr, 
+                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None):
+    
+    #First, select the runs to use by FBS version if requested.
+    if FBS is None:
+        bundleDicts = bundleDicts_input
+    else:
+        bundleDicts = dict()
+        all_runs = list(bundleDicts_input.keys())
+        for run in all_runs:
+            if not re.search(FBS,run):
+                continue
+            bundleDicts[run] = bundleDicts_input[run]
     
     # get plotting order
     unsort_mds = get_metric_medians(Key, bundleDicts, data_func)
@@ -37,6 +50,10 @@ def plot_OpSims_hist(Key, bundleDicts, order_func=get_metric_medians, data_func=
     sort_order = np.argsort(unsort_mds)
     mds = np.sort(np.abs(unsort_mds))
 
+    #Print the names of the extreme metrics according to the sorting function. 
+    print(runs[sort_order[ 0]], unsort_mds[sort_order[ 0]])
+    print(runs[sort_order[-1]], unsort_mds[sort_order[-1]])
+    
     # create normalization object
     Norm = mpl.colors.LogNorm(vmin=mds[0], vmax=mds[-1])
 
@@ -56,16 +73,28 @@ def plot_OpSims_hist(Key, bundleDicts, order_func=get_metric_medians, data_func=
         data = data[~(np.isnan(data) | np.isinf(data))]
         if data_func is not None:
             data = data_func(data)
-        
+        if datamin is not None:
+            data = data[data>=datamin]
+        if datamax is not None:
+            data = data[data<=datamax]
+
         c = color_map(Norm(np.abs(unsort_mds[order])))
         _ = ax.hist(data, bins=bins, histtype='step', color=c, \
                  density=density, label=run)
     
-        # label & legend
-        ax.set_xlabel(xlabel, fontsize=12)
-        ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45)
+    # label & legend
+    ax.set_xlabel(xlabel, fontsize=12)
+    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45)
     
-        #ax.yaxis.set_major_locator(plt.FixedLocator(np.array([500, 1000, 1500, 2000])/(healpix_pixarea/60)**2))
-        y_vals = ax.get_yticks()
-        ax.set_yticklabels(['{:.0f}'.format(x * (healpix_pixarea/60)**2) for x in y_vals], rotation=90)
-        ax.set_ylabel('Area ($\mathrm{degree^{2}}$)', labelpad=7)
+    #ax.yaxis.set_major_locator(plt.FixedLocator(np.array([500, 1000, 1500, 2000])/(healpix_pixarea/60)**2))
+    y_vals = ax.get_yticks()
+    ax.set_yticklabels(['{:.0f}'.format(x * healpix_pixarea.to(u.deg**2).value) for x in y_vals], rotation=90)
+    ax.set_ylabel('Area ($\mathrm{degree^{2}}$)', labelpad=7)
+        
+    #Set the xlabel range.
+    xmin, xmax = ax.get_xlim()
+    if datamin is not None:
+        xmin = datamin
+    if datamax is not None:
+        xmax = datamax
+    ax.set_xlim([xmin,xmax])
