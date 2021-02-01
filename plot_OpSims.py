@@ -47,15 +47,26 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
     # get plotting order
     unsort_mds = get_metric_medians(Key, bundleDicts, data_func)
     runs = list(bundleDicts.keys())
-    sort_order = np.argsort(unsort_mds)
+    sort_order = np.argsort(np.abs(unsort_mds))
     mds = np.sort(np.abs(unsort_mds))
 
     #Print the names of the extreme metrics according to the sorting function. 
     print(runs[sort_order[ 0]], unsort_mds[sort_order[ 0]])
     print(runs[sort_order[-1]], unsort_mds[sort_order[-1]])
     
-    # create normalization object
-    Norm = mpl.colors.LogNorm(vmin=mds[0], vmax=mds[-1])
+    # create normalization object. If more than one color map is being used, set the normalization as a list.
+    if type(color_map) is list:
+        Norm = list()
+        n_mds = len(mds)
+        n_chunks = int(np.ceil(len(mds)/len(color_map)))
+        for i in range(len(color_map)):
+            j1 = i*n_chunks
+            j2 = (i+1)*n_chunks
+            if j2>=len(mds):
+                j2 = len(mds)-1
+            Norm.append(mpl.colors.LogNorm(vmin=mds[j1], vmax=mds[j2]))
+    else:
+        Norm = mpl.colors.LogNorm(vmin=mds[0], vmax=mds[-1])
 
     # other plot setting
     density = False
@@ -63,7 +74,7 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
 
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
 
-    for order in sort_order:
+    for k, order in enumerate(sort_order):
     
         run = runs[order]
 
@@ -78,7 +89,11 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
         if datamax is not None:
             data = data[data<=datamax]
 
-        c = color_map(Norm(np.abs(unsort_mds[order])))
+        if type(color_map) is list:
+            j = int(k/n_chunks)
+            c = color_map[j](Norm[j](np.abs(unsort_mds[order])))
+        else:
+            c = color_map(Norm(np.abs(unsort_mds[order])))
         _ = ax.hist(data, bins=bins, histtype='step', color=c, \
                  density=density, label=run)
     
