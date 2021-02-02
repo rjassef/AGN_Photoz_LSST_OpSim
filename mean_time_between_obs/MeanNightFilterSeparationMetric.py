@@ -40,9 +40,14 @@ class MeanNightFilterSeparationMetric(BaseMetric):
         nights_1 = np.atleast_1d(np.unique(dataSlice[self.nightCol][condition_1]))
         nights_2 = np.atleast_1d(np.unique(dataSlice[self.nightCol][condition_2]))
 
+        #At least one night of observations is needed, so exit with a badval if no 
+        #observations were conducted in a given band..
+        if len(nights_1)==0 or len(nights_2)==0:
+            return self.badval
+        
         #For each night_1, find the closest night_2
         nights_2_closest_to_1 = self.find_min(nights_1, nights_2)
-
+     
         #Find the difference in nights in absolute terms.
         dnights = np.abs(nights_1 - nights_2_closest_to_1)
 
