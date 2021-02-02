@@ -31,7 +31,7 @@ def get_metric_medians(key, bd, data_func):
 
 def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data_func=None, 
                      color_map=mpl.cm.summer, xlabel=None, healpix_pixarea=6.391586616190171e-05*u.sr, 
-                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None):
+                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None, mds_offset_cm=0):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -48,7 +48,7 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
     unsort_mds = get_metric_medians(Key, bundleDicts, data_func)
     runs = list(bundleDicts.keys())
     sort_order = np.argsort(np.abs(unsort_mds))
-    mds = np.sort(np.abs(unsort_mds))
+    mds = np.sort(np.abs(unsort_mds)) + mds_offset_cm
 
     #Print the names of the extreme metrics according to the sorting function. 
     print(runs[sort_order[ 0]], unsort_mds[sort_order[ 0]])
