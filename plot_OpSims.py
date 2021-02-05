@@ -44,6 +44,10 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
                 continue
             bundleDicts[run] = bundleDicts_input[run]
     
+    #If no metrics, do not continue. 
+    if len(list(bundleDicts.keys()))==0:
+        return
+    
     # get plotting order
     unsort_mds = order_func(Key, bundleDicts, data_func)
     runs = list(bundleDicts.keys())
@@ -99,7 +103,10 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
     
     # label & legend
     ax.set_xlabel(xlabel, fontsize=12)
-    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45)
+    ncol_legend = 1
+    if len(mds)>40:
+        ncol_legend = 2
+    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
     
     #ax.yaxis.set_major_locator(plt.FixedLocator(np.array([500, 1000, 1500, 2000])/(healpix_pixarea/60)**2))
     y_vals = ax.get_yticks()
@@ -118,7 +125,7 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
 
 def plot_OpSims_color_excess_redshift(Key, bundleDicts_input, zs, quasar_colors, order_func=get_metric_medians, 
                                color_map=mpl.cm.summer, ylabel=None, figsize=(10, 15), dpi=200, 
-                               FBS=None, datamin=None, datamax=None, mds_offset_cm=0):
+                               FBS=None, datamin=None, datamax=None):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -134,8 +141,10 @@ def plot_OpSims_color_excess_redshift(Key, bundleDicts_input, zs, quasar_colors,
     # get plotting order
     unsort_mds = order_func(Key, bundleDicts)
     runs = list(bundleDicts.keys())
-    sort_order = np.argsort(np.abs(unsort_mds))
-    mds = np.sort(np.abs(unsort_mds)) + mds_offset_cm
+    sort_order = np.argsort(unsort_mds)
+    mds = np.sort(unsort_mds)
+    mds_offset = mds[0] - 1e-3*(mds[-1]-mds[0])
+    mds -= mds_offset
 
     #Print the names of the extreme metrics according to the sorting function. 
     print(runs[sort_order[ 0]], unsort_mds[sort_order[ 0]])
@@ -172,9 +181,9 @@ def plot_OpSims_color_excess_redshift(Key, bundleDicts_input, zs, quasar_colors,
         
         if type(color_map) is list:
             j = int(k/n_chunks)
-            c = color_map[j](Norm[j](np.abs(unsort_mds[order])))
+            c = color_map[j](Norm[j](unsort_mds[order]-mds_offset))
         else:
-            c = color_map(Norm(np.abs(unsort_mds[order])))
+            c = color_map(Norm(unsort_mds[order]-mds_offset))
             
         color_cond = (~np.isnan(quasar_colors)) & (~np.isinf(quasar_colors))
         color_excess_z = unsort_mds[order] - quasar_colors[color_cond]
@@ -184,7 +193,7 @@ def plot_OpSims_color_excess_redshift(Key, bundleDicts_input, zs, quasar_colors,
     
     # label & legend
     ax.set_xlabel("Redshift", fontsize=12)
-    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45)
+    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45, ncol=2)
     
     ax.set_ylabel(ylabel, fontsize=12, labelpad=7)
         
