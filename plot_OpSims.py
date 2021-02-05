@@ -31,7 +31,7 @@ def get_metric_medians(key, bd, data_func=None):
 
 def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data_func=None, 
                      color_map=mpl.cm.summer, xlabel=None, healpix_pixarea=6.391586616190171e-05*u.sr, 
-                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None, mds_offset_cm=0):
+                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -51,8 +51,10 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
     # get plotting order
     unsort_mds = order_func(Key, bundleDicts, data_func)
     runs = list(bundleDicts.keys())
-    sort_order = np.argsort(np.abs(unsort_mds))
-    mds = np.sort(np.abs(unsort_mds)) + mds_offset_cm
+    sort_order = np.argsort(unsort_mds)
+    mds = np.sort(unsort_mds)
+    mds_offset = mds[0] - 1e-3*(mds[-1]-mds[0])
+    mds -= mds_offset
 
     #Print the names of the extreme metrics according to the sorting function. 
     print(runs[sort_order[ 0]], unsort_mds[sort_order[ 0]])
@@ -95,9 +97,9 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
 
         if type(color_map) is list:
             j = int(k/n_chunks)
-            c = color_map[j](Norm[j](np.abs(unsort_mds[order])))
+            c = color_map[j](Norm[j](unsort_mds[order]-mds_offset))
         else:
-            c = color_map(Norm(np.abs(unsort_mds[order])))
+            c = color_map(Norm(unsort_mds[order]-mds_offset))
         _ = ax.hist(data, bins=bins, histtype='step', color=c, \
                  density=density, label=run)
     
