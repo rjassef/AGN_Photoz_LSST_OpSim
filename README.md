@@ -32,3 +32,7 @@ Colors from two models are implemented. One uses the AGN SED template of [Assef 
 [This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/color_excess/Visualize_Color_Excess.ipynb) shows the results for z=2. *Note that values closest to 0 are best, as that means that the 5sigma depths are in the exact same ratio as the expected AGN colors.*
 
 [This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/color_excess/Redshift_Color_Excess.ipynb) shows the median color excess as a function of redshift for all the models.
+
+### Mean time between Observations
+
+AGN variability can have a major impact for photo-zs.
