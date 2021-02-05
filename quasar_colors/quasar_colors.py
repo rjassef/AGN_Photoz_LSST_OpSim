@@ -36,3 +36,18 @@ def Temple_colors(color,z,imag,ebv=0):
 
     #Now, interpolate to get the right redshift.
     return np.interp(z,zs,colors)
+
+def Assef10_colors(color,z):
+
+    #Get the path to this module. Necessary so that we can read the model files.
+    module_directory = os.path.dirname(os.path.abspath(__file__))
+
+    #Folder where we find the model files.
+    model_file = module_directory+"/Assef_2010_AGN_SED/Assef_2010_AGN_SED_LSST_colors.dat"
+
+    tab = Table.read(model_file, format='ascii')
+    zs = tab['Redshift']
+    colors = tab[color]
+
+    #Now, interpolate to get the right redshift.
+    return np.interp(z,zs,colors)
