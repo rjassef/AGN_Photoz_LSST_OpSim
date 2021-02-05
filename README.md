@@ -19,4 +19,16 @@ The assumption, then, is that to detect the Lyman break color with at least a 3 
 
 [This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/Lstar_depth_dust.ipynb) carries out the depth calculations, and is based on [this metric](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/ExgalM5_with_cuts_AGN.py). 
 
-[This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/Visualize_Lstar_depth.ipynb) shows the results both as a the actual 3 sigma depth of *u* and the associated luminosity of the faintest AGN that would be detected as a function of L*. For comparison, it also shows the 5 sigma depth of *g* and the associated luminosity in terms of L*
+[This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/Visualize_Lstar_depth.ipynb) shows the results both as a the actual 3 sigma depth of *u* and the associated luminosity of the faintest AGN that would be detected as a function of L*. For comparison, it also shows the 5 sigma depth of *g* and the associated luminosity in terms of L*.
+
+### Color Excess
+
+A more general view of this is that accurate colors are needed to detect the spectral features of AGN in broad-band SEDs. The different depths of the bands will determine how accurately we can determine the colors of the faintest AGN at a given redshift. The metric then determines the color between the 5sigma depths of two consecutive bands, and in the visualization notebooks we compare those depths to the expected colors for an AGN as a function of redshift. 
+
+Colors from two models are implemented. One uses the AGN SED template of [Assef et al. (2010)](https://ui.adsabs.harvard.edu/abs/2010ApJ...713..970A/abstract) with a standard amount of AGN absorption in their model. The other is based on the models (to be published very soon) by Matthew Temple for three *i*-band magnitudes: 21.5, 24.5 and 26.0. 
+
+[This script](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/color_excess/script_Color_Excess.py) was used for carrying out the calculations, which are also implemented in [this notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/color_excess/Color_Excess.ipynb). Both use [this metric] (https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/color_excess/Exgalm5_color_with_cuts_AGN.py). 
+
+[This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/color_excess/Visualize_Color_Excess.ipynb) shows the results for z=2. *Note that values closest to 0 are best, as that means that the 5sigma depths are in the exact same ratio as the expected AGN colors.*
+
+[This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/color_excess/Redshift_Color_Excess.ipynb) shows the median color excess as a function of redshift for all the models.
