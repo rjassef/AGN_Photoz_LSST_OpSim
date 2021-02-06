@@ -33,7 +33,11 @@ Colors from two models are implemented. One uses the AGN SED template of [Assef 
 
 [This notebook](color_excess/Visualize_Color_Excess.ipynb) shows the results for z=2. *Note that values closest to 0 are best, as that means that the 5sigma depths are in the exact same ratio as the expected AGN colors.*
 
+Hard copies of all the plots can found [here](color_excess/plots/).
+
 [This notebook](color_excess/Redshift_Color_Excess.ipynb) shows the median color excess as a function of redshift for all the models.
+
+Hard copies of all the plots can found [here](color_excess/redshift_plots/).
 
 ### Mean time between Observations
 
@@ -42,3 +46,5 @@ AGN variability can have a major impact for photo-zs by distorting the SED in be
 [This script](mean_time_between_obs/Script_Mean_Night_Separation.py) was used to carry out the calculations, and they are also implemented in [this notebook](mean_time_between_obs/Mean_Night_Separation.ipynb). Both rely on [this metric](mean_time_between_obs/MeanNightFilterSeparationMetric.py), which consists on a modified version of a metric contributed by Phil Marshal for lensing observations.
 
 [This notebook](mean_time_between_obs/Visualize_Mean_Night_Separation.ipynb) shows the results.
+
+Hard copies of all the plots can found [here](mean_time_between_obs/plots/).
