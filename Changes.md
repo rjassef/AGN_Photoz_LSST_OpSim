@@ -7,6 +7,8 @@ Changes with respect to discussion in 2021-01-27 telecon
 
 * Added FBS 1.5 Opsims, so that now all plots use FBS 1.5 and 1.6. FBS 1.7 needs to be added.  
 
+* u- and g-band depths are now also shown directly (i.e., in magnitudes) as well as fractions of L/L* at z=2.5 .
+
 * Implemented two physical models for the quasar colors instead of the broken power-law: the AGN template from Assef et al. (2010), and the semi-empirical colors from Matthew Temple’s work. (Maybe Matthew can describe them in depth in the next telecon?)
 
 * Color excess’ are shown now for filter pairs independently instead of as a mean between all consecutive filter pairs.
@@ -21,4 +23,4 @@ Changes with respect to discussion in 2021-01-27 telecon
   1. that one band is taken right at the end of the season and the next band is taken right at the beginning of the next season, and
   2. that only one of the bands is taken during a season.
 
-As expected, though, results are not significantly affected.
+  As expected, though, results are not significantly affected.
