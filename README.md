@@ -35,4 +35,8 @@ Colors from two models are implemented. One uses the AGN SED template of [Assef 
 
 ### Mean time between Observations
 
-AGN variability can have a major impact for photo-zs.
+AGN variability can have a major impact for photo-zs by distorting the SED in between visits. This could be modeled as additional uncertainty on the observed colors. The first step taken here is to calculate the average time in between observations between two consecutive bands. Unlike the previous iteration, here we do not separate by seasons to avoid issues with the start/end of seasons (although the issue is unlikely very significant). 
+
+[This script](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/mean_time_between_obs/Script_Mean_Night_Separation.py) was used to carry out the calculations, and they are also implemented in [this notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/mean_time_between_obs/Mean_Night_Separation.ipynb). Both rely on [this metric](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/mean_time_between_obs/MeanNightFilterSeparationMetric.py), which consists on a modified version of a metric contributed by Phil Marshal for lensing observations. 
+
+[This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/mean_time_between_obs/Visualize_Mean_Night_Separation.ipynb) shows the results. 
