@@ -21,6 +21,8 @@ The assumption, then, is that to detect the Lyman break color with at least a 3 
 
 [This notebook](uband_depth/Visualize_Lstar_depth.ipynb) shows the results both as a the actual 3 sigma depth of *u* and the associated luminosity of the faintest AGN that would be detected as a function of L*. For comparison, it also shows the 5 sigma depth of *g* and the associated luminosity in terms of L*.
 
+Hard copies of all the plots can found [here](uband_depth/plots/).
+
 ### Color Excess
 
 A more general view of this is that accurate colors are needed to detect the spectral features of AGN in broad-band SEDs. The different depths of the bands will determine how accurately we can determine the colors of the faintest AGN at a given redshift. The metric then determines the color between the 5sigma depths of two consecutive bands, and in the visualization notebooks we compare those depths to the expected colors for an AGN as a function of redshift.
