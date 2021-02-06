@@ -20,4 +20,5 @@ Changes with respect to discussion in 2021-01-27 telecon
 * Following a question asked by JT, I removed for the “mean time between bands metric” the requirement that only observations within a season are considered. This is not necessary, and considering the seasons could have two potential issues (granted both are extreme cases that we are very unlikely to find):
   1. that one band is taken right at the end of the season and the next band is taken right at the beginning of the next season, and
   2. that only one of the bands is taken during a season.
+
 As expected, though, results are not significantly affected.
