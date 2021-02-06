@@ -17,7 +17,7 @@ A key spectral feature of AGNs that helps determine the photometric redshift is 
 
 The assumption, then, is that to detect the Lyman break color with at least a 3 sigma significance, we need to detect *u* at the 3 sigma level, as *g* will always be much deeper. 
 
-[This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/Lstar_depth_dust.ipynb) carries out the depth calculations, and is based on [this metric](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/ExgalM5_with_cuts_AGN.py). 
+[This notebook](blob/main/uband_depth/Lstar_depth_dust.ipynb) carries out the depth calculations, and is based on [this metric](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/ExgalM5_with_cuts_AGN.py). 
 
 [This notebook](https://github.com/rjassef/AGN_Photoz_LSST_OpSim/blob/main/uband_depth/Visualize_Lstar_depth.ipynb) shows the results both as a the actual 3 sigma depth of *u* and the associated luminosity of the faintest AGN that would be detected as a function of L*. For comparison, it also shows the 5 sigma depth of *g* and the associated luminosity in terms of L*.
 
