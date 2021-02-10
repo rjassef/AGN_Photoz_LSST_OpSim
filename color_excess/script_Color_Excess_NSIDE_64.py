@@ -87,3 +87,19 @@ for run in dbRuns:
                     opSimDbs[run], metricDataPath, resultDbs[run])
     metricGroup.runAll()
 
+#Repeat for FBS 1.7
+FBS_version = "1.7"
+dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
+
+opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
+
+dbRuns = show_opsims(dbDir)
+for run in dbRuns:
+    if run in completed_runs:
+        continue
+    for k in range(len(filters)-1):
+        Color_EM5[k].setRunName(run)
+    metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
+                    opSimDbs[run], metricDataPath, resultDbs[run])
+    metricGroup.runAll()
+
