@@ -105,10 +105,11 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
     
     # label & legend
     ax.set_xlabel(xlabel, fontsize=12)
-    ncol_legend = 1
-    if len(mds)>40:
-        ncol_legend = 2
-    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
+    #ncol_legend = 1
+    #if len(mds)>40:
+    #    ncol_legend = 2
+    ncol_legend = 1 + int(len(mds)/60.)
+    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.0), edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
     
     #ax.yaxis.set_major_locator(plt.FixedLocator(np.array([500, 1000, 1500, 2000])/(healpix_pixarea/60)**2))
     y_vals = ax.get_yticks()
@@ -195,7 +196,8 @@ def plot_OpSims_color_excess_redshift(Key, bundleDicts_input, zs, quasar_colors,
     
     # label & legend
     ax.set_xlabel("Redshift", fontsize=12)
-    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.02), edgecolor='k', loc=2, labelspacing=0.45, ncol=2)
+    ncol_legend = 1 + int(len(mds)/60.)
+    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.0), edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
     
     ax.set_ylabel(ylabel, fontsize=12, labelpad=7)
         
