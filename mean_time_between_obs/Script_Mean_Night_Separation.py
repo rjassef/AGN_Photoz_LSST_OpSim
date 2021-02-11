@@ -82,6 +82,27 @@ opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
 
 dbRuns = show_opsims(dbDir)
 for run in dbRuns:
+    if run in completed_runs:
+        continue
+    for Mean_Night in Mean_Night_list:
+        Mean_Night.setRunName(run)
+    metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
+                    opSimDbs[run], metricDataPath, resultDbs[run])
+    metricGroup.runAll()
+    
+#Now run for FBS v1.7
+FBS_version = "1.7"
+dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
+
+if not os.path.exists(os.path.abspath(outDir)):
+    os.mkdir(os.path.abspath(outDir))
+    
+opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
+
+dbRuns = show_opsims(dbDir)
+for run in dbRuns:
+    if run in completed_runs:
+        continue
     for Mean_Night in Mean_Night_list:
         Mean_Night.setRunName(run)
     metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
