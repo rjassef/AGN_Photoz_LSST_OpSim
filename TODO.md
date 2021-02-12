@@ -3,8 +3,8 @@ To Do
 
 - [x] Add FBS 1.7
 
-- [] Study the DDFs.
+- [ ] Study the DDFs.
 
-- [] Add a post-processing physical variability analysis to the time metric.
+- [ ] Add a post-processing physical variability analysis to the time metric.
 
-- [] Add maps for selected metrics.
+- [ ] Add maps for selected metrics.
