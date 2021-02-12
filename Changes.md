@@ -1,3 +1,13 @@
+2021-02-11
+----------
+
+* Added FBS 1.7 to calculations with all metrics.
+
+* Following the information about the FBSs provided by Lynne Jones on 2021-02-10, plots now only show the current OpSims being considered from FBS 1.5, 1.6 and 1.7. The creation of list was implemented in [this folder](Run_Info), using the tools and documentation mentioned by Lynne.
+
+* The [u-band depth](uband_depth) and [color excess](color_excess) calculations were reran using NSIDE=64 instead of NSIDE=128. This was done to save storage space in SciServer, which is limited to 10GB. Old plots are still saved in the respective folders, and the comparison shows there is no significant difference. The description of the DustMap class: https://sims-maf.lsst.io/_modules/lsst/sims/maf/maps/dustMap.html implies using NSIDE=64 instead of 128 should not be a problem. 
+
+
 Changes with respect to discussion in 2021-01-27 telecon
 --------------------------------------------------------
 
