@@ -3,7 +3,7 @@ To Do
 
 - [x] Add FBS 1.7
       
-      - Also added an OpSim that was missing from FBS 1.5, baseline_samefilt_v1.5_10yrs.
+  * Also added an OpSim that was missing from FBS 1.5, baseline_samefilt_v1.5_10yrs.
 
 - [ ] Study the DDFs.
 
