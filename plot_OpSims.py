@@ -31,7 +31,7 @@ def get_metric_medians(key, bd, data_func=None):
 
 def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data_func=None, 
                      color_map=mpl.cm.summer, xlabel=None, healpix_pixarea=6.391586616190171e-05*u.sr, 
-                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None):
+                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None, title=None):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -123,6 +123,11 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
     if datamax is not None:
         xmax = datamax
     ax.set_xlim([xmin,xmax])
+    
+    #Add the title if provided.
+    if title is not None:
+        ax.set_title(title)
+    
 
 ####
 
