@@ -82,7 +82,9 @@ def run_calcs(FBS_version, slicer, metricDataPath, filters, DDF_names):
         print("Processing run ",run)
         
         #If OpSim run has no DDFs, then skip it. 
-        if len(opSimDbs[run].fetchPropInfo()[1]['DD']) == 0:
+        opsim_propInfo = opSimDbs[run].fetchPropInfo()[1]
+        #if len(opSimDbs[run].fetchPropInfo()[1]['DD']) == 0:
+        if 'DD' not in opsim_propInfo.keys() or len(opsim_propInfo['DD'])==0:
             print("No DDFs in this run. Skipping to the next one.")
             continue
         
