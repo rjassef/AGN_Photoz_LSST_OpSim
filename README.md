@@ -19,11 +19,22 @@ The assumption, then, is that to detect the Lyman break color with at least a 3 
 
 **Note:** We only consider areas with foreground reddening E(B-V)<1.0 mag, which effectively cuts out the Galactic Plane and Galactic Center.
 
-[This script](Script_Lstar_depth_NSIDE64.py) was used for carrying out the calculations, based on [this metric](uband_depth/ExgalM5_with_cuts_AGN.py). The calculation is also implemented in [this notebook](uband_depth/Lstar_depth_dust.ipynb).
+[This script](uband_depth/Script_Lstar_depth_NSIDE64.py) was used for carrying out the calculations, based on [this metric](uband_depth/ExgalM5_with_cuts_AGN.py). The calculation is also implemented in [this notebook](uband_depth/Lstar_depth_dust.ipynb).
 
 [This notebook](uband_depth/Visualize_Lstar_depth_Current_OpSims.ipynb) shows the results both as a the actual 3 sigma depth of *u* and the associated luminosity of the faintest AGN that would be detected as a function of L*. For comparison, it also shows the 5 sigma depth of *g* and the associated luminosity in terms of L*.
 
 Hard copies of all the plots can found [here](uband_depth/plots_current_opsims_64/).
+
+### u-band Depth for DDFs
+
+The same analysis described above for the WFD has also been done for the DDFs, for each one of them separately (COSMOS, ECDFS, EDFS, ELAIS-S1 and XMM-LSS), as well as for all of them together (AllDDFs).
+
+[This script](DDFs_uband_depth/Script_DDF_uband_depth.py) was used for carrying out the calculations, based on [this metric](uband_depth/ExgalM5_with_cuts_AGN.py). The calculation is also implemented in [this notebook](DDFs_uband_depth/DDF_uband_depth.ipynb).
+
+[This notebook](DDFs_uband_depth/Visualize_DDF_uband_depth.ipynb) shows the results both as a the actual 3 sigma depth of *u* and the associated luminosity of the faintest AGN that would be detected as a function of L*. For comparison, it also shows the 5 sigma depth of *g* and the associated luminosity in terms of L*.
+
+Hard copies of all the plots can found [here](DDFs_uband_depth/plots_current_opsims_64/).
+
 
 ### Color Excess
 
