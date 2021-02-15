@@ -31,7 +31,8 @@ def get_metric_medians(key, bd, data_func=None):
 
 def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data_func=None, 
                      color_map=mpl.cm.summer, xlabel=None, healpix_pixarea=6.391586616190171e-05*u.sr, 
-                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None, title=None):
+                     figsize=(10, 15), dpi=200, FBS=None, datamin=None, datamax=None, title=None,
+                     bins=60):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -76,7 +77,7 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
 
     # other plot setting
     density = False
-    bins = 60
+    #bins = 60
 
     fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
 
