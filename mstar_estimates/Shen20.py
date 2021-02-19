@@ -33,7 +33,13 @@ class QLF(object):
         #Reference redshift parameter (see section 4.2 of S20).
         self.z_ref = 2
 
-        #Luminosity and density units used by the different parameters.
+        #Units of Lstar and phi_star. Since the methods log_Lstar and log_phi_star return the base 10 logarithm of them, we need to maintain the units in these variables such that we can write
+        #
+        # Lstar = 10.**(self.log_Lstar(z)) * Lstar_units
+        #
+        # phi_star = 10.**(self.log_phi_star(z)) * phi_star_units
+        #
+        # to get those parameters in the correct units.
         self.Lstar_units = L_sun
         self.phi_star_units = u.dex**-1 * u.Mpc**-3
 
@@ -54,6 +60,7 @@ class QLF(object):
     def gamma1(self, z):
         """
         This method returns the value of the gamma_1(z) parameter at redshift z.
+        The Chebyshev polynomials are defined later as the method _T(n,x) for n=0, 1 and 2.
 
         Based on equation (14) of S20.
 
@@ -122,7 +129,7 @@ class QLF(object):
 
         Based on equation (12) of S20, modified to make the derivative be with respect to L/L* instead of L.
 
-        This is a more useful version for integrating.
+        This is just a simple rewrite of equation (12) to avoid calculating L* in every iteration if we know the value of L/L* instead of L. This is useful for integrating over L/L* instead of over L.
 
         Parameters
         ----------
@@ -143,6 +150,8 @@ class QLF(object):
     def L1450(self, Lbol):
         """
         This method returns the L1450 monochromatic luminosity of a quasar of bolometric luminosity Lbol using equation (5) and the coefficients in Table 1 of S20.
+
+        While the typical use of equation (5) is to determine Lbol given an observable monochromatic luminosity, here we use the conversion to go from Lbol to L1450. A direct application of this function is used in the accompanying script mstar.vandenberk.py, where we want to estimate the observed fluxes of a type 1 quasar with bolometric luminosity equal to L*.
 
         Note that the monochromatic luminosity is defined as in Table 1 of S20, so the units are the same as those in Lbol. In other words, this method return nu*L_nu, not L_nu.
 
