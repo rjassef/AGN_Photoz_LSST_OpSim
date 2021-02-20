@@ -14,9 +14,9 @@ def dn_dLfrac(Lfrac,z,qlf):
     return qlf.dndLfrac(Lfrac,z).to(u.Mpc**-3).value
 
 #Integrand. For a given redshift, and functions that determines the minimum and maximum Lfrac=L/L* observable at a given redshift, this function returns the differential number of quasars per unit redshift per sterradian.
-def dN_dz(z,Lfrac_min,Lfrac_max,qlf):
+def dN_dz(z,Lfrac_min_func,Lfrac_max_func,qlf):
     dVc_dz = cosmo.differential_comoving_volume(z).to(u.Mpc**3/u.sr).value
-    dN_dVc = quad(dn_dLfrac,Lfrac_min(z),Lfrac_max(z),args=(z,qlf))[0]
+    dN_dVc = quad(dn_dLfrac,Lfrac_min_func(z),Lfrac_max_func(z),args=(z,qlf))[0]
     return dN_dVc*dVc_dz
 
 ###
