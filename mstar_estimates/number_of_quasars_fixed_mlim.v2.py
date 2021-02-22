@@ -9,14 +9,29 @@ from astropy.table import Table
 
 import Shen20
 
-#Integrand. For a given Lfrac=L/L* and redshift z, the function returns the differential number of quasars per unit comoving volume per unit Lfrac. This is just basically a shorthand to strip the units from the qlf.dndLfrac method, as scipy.integrate.quad does not accept units.
-def dn_dLfrac(Lfrac,z,qlf):
-    return qlf.dndLfrac(Lfrac,z).to(u.Mpc**-3).value
+#Integrand. See discussion in main comments.
+def dp_dLfrac(x, alpha, beta):
+    return (x**-alpha + x**-beta)**-1
 
 #Integrand. For a given redshift, and functions that determines the minimum and maximum Lfrac=L/L* observable at a given redshift, this function returns the differential number of quasars per unit redshift per sterradian.
 def dN_dz(z,Lfrac_min_func,Lfrac_max_func,qlf):
+
+    #Calculate phi_star_prime, make sure it is in the right units, and strip the units.
+    phi_star_prime = 10.**(qlf.log_phi_star(z))/np.log(10.) * qlf.phi_star_units * u.dex
+    phi_star_prime = phi_star_prime.to(u.Mpc**-3).value
+
+    #Calculate the term dN_dVc as in eqn. (6) in the comments below.
+    alpha = -(qlf.gamma1(z)+1)
+    beta  = -(qlf.gamma2(z)+1)
+    Lfrac_min = Lfrac_min_func(z)
+    Lfrac_max = Lfrac_max_func(z)
+    dN_dVc = quad(dp_dLfrac,Lfrac_min,Lfrac_max,args=(alpha,beta))[0]
+    dN_dVc *= phi_star_prime
+
+    #Calculate the differential comoving volume term.
     dVc_dz = cosmo.differential_comoving_volume(z).to(u.Mpc**3/u.sr).value
-    dN_dVc = quad(dn_dLfrac,Lfrac_min_func(z),Lfrac_max_func(z),args=(z,qlf))[0]
+
+    #Return the integrand of eqn. (1) in the comments below.
     return dN_dVc*dVc_dz
 
 ###
@@ -28,15 +43,27 @@ The qlf method needs to be able to return dn/dLfrac, i.e., the differential numb
 
 The number of quasars is then:
 
-N_QSO = area * integral_{zmin}^{zmax} dN/dz * dz
+N_QSO = area * integral_{zmin}^{zmax} dN/dz * dz                            (1)
 
 For simplicity, we split the term dN/dz = dN/dVc * dVc/dz, where
 
-dVc/dz = differential comoving volume element
+dVc/dz = differential comoving volume element                               (2)
 
 and
 
-dN/dVc = integral_{Lfrac_min(z)}^{Lfrac_max(z)} dn/dLfrac dLfrac
+dN/dVc = integral_{Lfrac_min(z)}^{Lfrac_max(z)} dn/dLfrac dLfrac            (3)
+
+Now, we could call qlf.dndLfrac, as done in number_of_quasars_fixed_mlim.py, but that it is very inneficient. Note that:
+
+dn/dLfrac = phi_star_prime(z) / (Lfrac**-alpha(z) + Lfrac**-beta(z))        (4)
+
+so we can make the integration a lot more efficient if we do not calculate each parameter that depends on z only each time we call dn/dLfrac for a fixed redshift. We define then
+
+dp/dLfrac = dn/dLfrac / phi_star_prime = (Lfrac**-alpha + Lfrac**-beta)**-1 (5)
+
+So that
+
+dN/dVc = phi_star_prime * integral_{Lfrac_min(z)}^{Lfrac_max(z)} dp/dLfrac dLfrac                                                                      (6)
 
 We carry out all the integrations using scipy.integrate.quad. The first arument given to quad is the function we want to integrate, followed by the integration limits. Additionally, we can give a list of arguments using the args keyword that are passed to the function as well. See https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html for further details.
 
