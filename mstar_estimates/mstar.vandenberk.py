@@ -44,9 +44,17 @@ for filter in filters:
     data = np.loadtxt("LSST_LSST.{}.dat".format(filter), skiprows=1)
     filtercurve[filter] = S.ArrayBandpass(data[:,0], data[:,1], name="{}band".format(filter))
 
+#Calculate the m_1450 - m_i color at z=0 so that we can easily transform M_1450 to M_i later in the code. Note that M_i for an L* quasar is a needed quantity to replicate Table 10.2 of https://www.lsst.org/sites/default/files/docs/sciencebook/SB_10.pdf. See code Table10_2.py for further details.
+UV_band = S.ArrayBandpass(lam_rest_b1450.to(u.AA).value, R_1450, name='UV_band')
+obs_uv  = S.Observation(qso, UV_band, binset=qso.wave)
+obs_i   = obs = S.Observation(qso, filtercurve['i'], binset=qso.wave)
+#We define color_1450_i = M_1450 - M_i
+color_1450_i = obs_uv.effstim('abmag') - obs_i.effstim('abmag')
+
 #Redshift grid.
 zmin = 0.01
-zmax = 6.0
+#zmax = 6.0
+zmax = 7.0
 #dlogz = 0.01
 #zs = 10.**(np.arange(np.log10(1+zmin), np.log10(1+zmax), dlogz)) - 1
 dz = 0.01
@@ -55,6 +63,7 @@ zs = np.arange(zmin, zmax, dz)
 #For each redshift bin, calculate the apparent magnitude of an L* quasar in a each LSST band.
 mstar = np.zeros((len(zs),len(filters)))
 M_1450 = np.zeros(len(zs))
+M_i = np.zeros(len(zs))
 for k,z in enumerate(zs):
 
     #Redshift the qso template to redshift z. Note that qso is an ArraySpectrum pysynphot object, so we use the pysynphot.ArraySpectrum.redshift() method to create a redshifted version of the spectrum.
@@ -87,6 +96,9 @@ for k,z in enumerate(zs):
     #Now, the AB magnitude is just m = -2.5 log10 ( fnu / 3631 Jy) by definition. So the AB absolute magnitude at 1450A is just:
     M_1450[k] = -2.5*np.log10( Fnu_at_10pc / (3631*u.Jy) )
 
+    #And we can easily get the absolute i band magnitude of the L* quasar by using the color term color_1450_i = M_1450 - M_i estimated earlier.
+    M_i[k] = M_1450[k] - color_1450_i
+
     #The task now is to renormalize our redshifted spectrum so that it has a 1450A monochromatic luminosity equal to that of an L* quasar.
     #Start by transforming the 1450A luminosity density of the L* quasar to the observed flux density, using the equation listed above.
     DL = cosmo.luminosity_distance(z)
@@ -111,15 +123,17 @@ for k,z in enumerate(zs):
             mstar[k,j] = np.nan
 
 #Print the apparent magnitudes of an L* quasar as a function of redshift.
-output = np.zeros((len(zs),len(filters)+2))
+output = np.zeros((len(zs),len(filters)+3))
 output[:,0] = zs
 output[:,1:len(filters)+1]  = mstar
-output[:,-1] = M_1450
+output[:,-2] = M_1450
+output[:,-1] = M_i
 table_file = open("mstar_z.vandenberk.dat","w")
 table_file.write("#Redshift")
 for filter in filters:
     table_file.write("\tLSST{}".format(filter))
-table_file.write("\tM_1450\n")
+table_file.write("\tM_1450")
+table_file.write("\tM_i\n")
 np.savetxt(table_file,output,fmt='%15.5f')
 table_file.close()
 
