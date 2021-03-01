@@ -18,6 +18,9 @@ class QLF(object):
 
     def __init__(self, model="B"):
 
+        #Save the model.
+        self.model = model
+
         #Check which model is being used.
         if model=="A":
             icol = 1
@@ -28,7 +31,12 @@ class QLF(object):
             return
 
         #Read the QLF model parameters from Shen20.dat, which is just Table 4 of S20.
-        self.a0, self.a1, self.a2, self.b0, self.b1, self.b2, self.c0, self.c1, self.c2, self.d0, self.d1 = np.loadtxt("Shen20.dat", usecols=[icol])
+        #self.a0, self.a1, self.a2, self.b0, self.b1, self.b2, self.c0, self.c1, self.c2, self.d0, self.d1 = np.loadtxt("Shen20.dat", usecols=[icol])
+        S20_T4 = open("Shen20.dat")
+        for line in S20_T4:
+            x = line.split()
+            exec("self.{0} = {1}".format(x[0], x[icol]))
+        S20_T4.close()
 
         #Reference redshift parameter (see section 4.2 of S20).
         self.z_ref = 2
@@ -62,11 +70,17 @@ class QLF(object):
         This method returns the value of the gamma_1(z) parameter at redshift z.
         The Chebyshev polynomials are defined later as the method _T(n,x) for n=0, 1 and 2.
 
-        Based on equation (14) of S20.
+        Based on equations (14 and 16) of S20.
 
         """
-        x = (1+z)
-        return self.a0*self._T(0,x) + self.a1*self._T(1,x) + self.a2*self._T(2,x)
+        if self.model=="A":
+            x = (1+z)
+            return self.a0*self._T(0,x) + self.a1*self._T(1,x) + self.a2*self._T(2,x)
+        elif self.model=="B":
+            x = (1.+z)/(1.+self.z_ref)
+            return self.a0 * x**self.a1
+        else:
+            return np.nan
 
     def gamma2(self, z):
         """
