@@ -146,4 +146,4 @@ def Nqso(zmin, zmax, m_bright, m_faint, LSSTfilter, qlf, area=4.*np.pi*u.sr, mst
         return np.nan
 
     #Carry out the calculation.
-    return area.to(u.sr).value * quad(dN_dz, zmin, zmax, args=(lLfrac_min_func, lLfrac_max_func, LSSTfilter, qlf, cosmo), epsabs=1e-3, epsrel=1e-3)[0]
+    return area.to(u.sr).value * quad(dN_dz, zmin, zmax, args=(lLfrac_min_func, lLfrac_max_func, LSSTfilter, qlf, cosmo), epsabs=1e-1, epsrel=1e-3)[0]
