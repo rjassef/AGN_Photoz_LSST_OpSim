@@ -5,6 +5,7 @@ import astropy.units as u
 from astropy.constants import c
 #from astropy.cosmology import Planck13 as cosmo
 from astropy.table import Table
+import sys
 
 from astropy.cosmology import FlatLambdaCDM
 cosmo = FlatLambdaCDM(H0=70, Om0=0.3, Tcmb0=2.725)
@@ -17,7 +18,6 @@ warnings.simplefilter("ignore")
 import pysynphot as S
 
 #Module with the implementation of the QLF model.
-import sys
 sys.path.append("../../QLFs/")
 import Shen20
 
@@ -29,9 +29,17 @@ All output magnitudes are in the AB system.
 
 """
 
+if len(sys.argv)!=2:
+    print("Correct use: python",sys.argv[0]," model")
+    sys.exit()
+model = sys.argv[1]
+if model not in ["A","B"]:
+    print("Wrong model: ", model)
+    sys.exit()
+
 #Create the QLF object.
 #model = "B"
-model = "A"
+#model = "A"
 qlf = Shen20.QLF(model=model)
 
 #Now, load the vanden Berk composite. The file with the spectrum is the one provided with their journal article.

@@ -3,8 +3,11 @@
 import numpy as np
 import astropy.units as u
 from astropy.constants import c
-from astropy.cosmology import Planck13 as cosmo
+#from astropy.cosmology import Planck13 as cosmo
 from astropy.table import Table
+
+from astropy.cosmology import FlatLambdaCDM
+cosmo = FlatLambdaCDM(H0=70, Om0=0.3, Tcmb0=2.725)
 
 #This convoluted way of importing pysynphot is so that it does not generate a warning and take a long time to load. This happens because some tasks of pysynphot expect a number of files installed in the path 'PYSYN_CDBS' to work correctly. None of those tasks are being used in this script.
 import os

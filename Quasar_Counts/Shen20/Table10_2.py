@@ -15,11 +15,20 @@ from astropy.cosmology import FlatLambdaCDM
 cosmo = FlatLambdaCDM(H0=70, Om0=0.3, Tcmb0=2.725)
 
 
+if len(sys.argv)!=2:
+    print("Correct use: python",sys.argv[0]," model")
+    sys.exit()
+model = sys.argv[1]
+if model not in ["A","B"]:
+    print("Wrong model: ", model)
+    sys.exit()
+
+
 area = 20000.*u.deg**2
 
 #Create the QLF object.
 #model = "B"
-model ="A"
+#model ="A"
 qlf = Shen20.QLF(model=model)
 
 mstar_data = Table.read("mstar_z.vandenberk.{}.dat".format(model), format='ascii')
