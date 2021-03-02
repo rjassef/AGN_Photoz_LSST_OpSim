@@ -119,7 +119,7 @@ def get_phi_lam_obs(z, qlf, lLfrac_lam_obs_min, lLfrac_lam_obs_max, lam_eff_filt
     lLfrac_lam_obs     = np.arange(lLfrac_lam_obs_min, lLfrac_lam_obs_max + 0.1*dlLfrac_lam_obs, dlLfrac_lam_obs)
 
     #Now, get the obscuration function in the observed band.
-    ltheta_fact = 0.4*qlf.dgr.to(u.cm**2).value*1e22 * qlf.xi(lam_eff_filter/(1.+z))
+    ltheta_fact = 0.4*qlf.dgr(z).to(u.cm**2).value*1e22 * qlf.xi(lam_eff_filter/(1.+z))
     ltheta = 10.**(lNH-22) * ltheta_fact
     ltheta_2D = np.tile(ltheta, [len(lLfrac_lam_obs), 1])
 

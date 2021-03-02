@@ -51,7 +51,7 @@ class QLF(object):
         self.z_ref = 2
 
         #Dust to gas ratio assumed: A_B/NH
-        self.dgr = 8.47e-22 * u.cm**2
+        self.dgr_local = 8.47e-22 * u.cm**2
 
         #Units of Lstar and phi_star. Since the methods log_Lstar and log_phi_star return the base 10 logarithm of them, we need to maintain the units in these variables such that we can write
         #
@@ -311,3 +311,6 @@ class QLF(object):
 
         """
         return self.sig1_B*(Lstar_10*10 * Lfrac)**self.beta_B + self.sig2_B
+
+    def dgr(self, z):
+        return self.dgr_local

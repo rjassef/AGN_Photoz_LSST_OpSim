@@ -49,7 +49,7 @@ for i in range(len(mi[:-1])):
 
 cato.write("{0:7s}".format("Total"))
 for k in range(len(z[:-1])):
-    cato.write("{0:12.0f}".format(Nqso(z[k], z[k+1], mi[0], mi[-1], 'LSSTi', qlf, mstar_data=mstar_data, Mi_lim=-20, area=area)))
-cato.write("{0:12.0f}\n".format(Nqso(z[0], z[-1], mi[0], mi[-1], 'LSSTi', qlf, mstar_data=mstar_data, Mi_lim=-20, area=area)))
+    cato.write("{0:12.0f}".format(Nqso(z[k], z[k+1], mi[0], mi[-1], 'LSSTi', qlf, mstar_data=mstar_data, Mi_lim=-20, area=area, cosmo=cosmo)))
+cato.write("{0:12.0f}\n".format(Nqso(z[0], z[-1], mi[0], mi[-1], 'LSSTi', qlf, mstar_data=mstar_data, Mi_lim=-20, area=area, cosmo=cosmo)))
 
 cato.close()
