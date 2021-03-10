@@ -11,7 +11,37 @@ root_path = re.search("(.*/AGN_Photoz_LSST_OpSim)/*",os.getcwd()).group(1)
 
 import sys
 sys.path.append(root_path+"/Quasar_Counts/")
-from Phi_Obs_v3 import get_phi_lam_obs
+#from Phi_Obs_v2_MiLim import get_phi_lam_obs, get_Lfrac_lam
+from Phi_Obs_v3_MiLim import get_phi_lam_obs, get_Lfrac_lam
+
+"""
+This version of Nqso applies the M_lim in Lbol space instead of in the observed wavelength space.
+
+"""
+
+def get_Lfrac_lam_vec(Lfrac, Lstar_10, qlf):
+    """
+    This function returns L_lam(L)/L_lam(Lstar). This function is only valid for UV/optical wavelengths, were we assume the conversion factors are just proportional to the B-band conversion.
+
+    Parameters
+    ----------
+
+    Lfrac: numpy array
+        Values of L/Lstar for which to calculate Lfrac_lam = L_lam/L_lam(Lstar)
+
+    Lstar_10: float
+        Value of Lstar in units of 10^10 Lsun.
+
+    qlf: QLF object
+        QLF being used.
+
+    """
+    D1 = qlf.c_B[0] * Lstar_10**qlf.k_B[0]
+    D2 = qlf.c_B[1] * Lstar_10**qlf.k_B[1]
+    top    = D1+D2
+    bottom = D1*Lfrac**(qlf.k_B[0]-1) + D2*Lfrac**(qlf.k_B[1]-1)
+
+    return top/bottom
 
 #LSST Filter wavelengths. Will be useful for the obscuation function we will need to set up.
 lam_eff = {'LSSTu': 3751.36*u.AA,
@@ -23,7 +53,7 @@ lam_eff = {'LSSTu': 3751.36*u.AA,
           }
 
 #Integrand. For a given redshift, and functions that determines the minimum and maximum Lfrac=L/L* observable at a given redshift, this function returns the differential number of quasars per unit redshift per sterradian.
-def dN_dz(z,lLfrac_min_func,lLfrac_max_func,LSSTfilter,qlf,cosmo):
+def dN_dz(z, lLfrac_min_func, lLfrac_max_func, LSSTfilter, qlf, cosmo, lLfrac_min_Mi_func=None):
 
     #These are the limits in log L/L* for NH=0.
     lLfrac_obs_min = lLfrac_min_func(z)
@@ -31,8 +61,22 @@ def dN_dz(z,lLfrac_min_func,lLfrac_max_func,LSSTfilter,qlf,cosmo):
     if lLfrac_obs_min>lLfrac_obs_max:
         return 0
 
+    #Now, for a given Mi_lim, we need to find what is the Lfrac that matches it. For this, we just do an interpolation scheme.
+    if lLfrac_min_Mi_func is None:
+        lLfrac_min_lim = None
+    else:
+        lLfrac_lam_min_Mi = lLfrac_min_Mi_func(z)
+        Lstar_10          = (10.**(qlf.log_Lstar(z))*qlf.Lstar_units/(1e10*L_sun)).to(1.)
+        lLfrac_aux        = np.arange(-10.0, 10.0, 0.1)
+        Lfrac_aux         = 10.**(lLfrac_aux)
+        Lfrac_lam_Mi      = get_Lfrac_lam(Lfrac_aux, Lstar_10, qlf)
+        lLfrac_func       = interpolate.interp1d(np.log10(Lfrac_lam_Mi), lLfrac_aux)
+        lLfrac_min_lim    = lLfrac_func(lLfrac_lam_min_Mi)
+        # print(lLfrac_min_lim, lLfrac_lam_min_Mi, np.log10(get_Lfrac_lam([10.**lLfrac_min_lim], Lstar_10, qlf)))
+        # input()
+
     #We estimate numerically the observed QLF starting from the bolometric QLF. Integrate it assuming a constant value per bin.
-    phi_lam_obs, dlLfrac_lam_obs = get_phi_lam_obs(z, qlf, lLfrac_obs_min, lLfrac_obs_max, lam_eff[LSSTfilter])
+    phi_lam_obs, dlLfrac_lam_obs = get_phi_lam_obs(z, qlf, lLfrac_obs_min, lLfrac_obs_max, lam_eff[LSSTfilter], lLfrac_min_lim=lLfrac_min_lim)
     dN_dVc = np.sum(phi_lam_obs*dlLfrac_lam_obs)
 
     #Calculate the differential comoving volume term.
@@ -125,13 +169,14 @@ def Nqso(zmin, zmax, m_bright, m_faint, LSSTfilter, qlf, area=4.*np.pi*u.sr, mst
     mstar   = mstar_data[LSSTfilter][cond]
 
     #We want to estimate the number of quasars down to a faint limit of m_faint or Mi_lim, whichever is brightest.
-    Mstar_i          = mstar_data['M_i'][cond]
-    lLfrac_min_mfaint = -0.4*(m_faint-mstar)
-    lLfrac_min_Mi     = -0.4*(Mi_lim-Mstar_i)
-    lLfrac_min_table  = np.where(lLfrac_min_Mi>lLfrac_min_mfaint, lLfrac_min_Mi, lLfrac_min_mfaint)
+    lLfrac_min_Mi_func = None
+    if not np.isinf(-Mi_lim):
+        Mstar_i          = mstar_data['M_i'][cond]
+        lLfrac_min_Mi_func = interpolate.interp1d(z_mstar, -0.4*(Mi_lim-Mstar_i))
 
     #Create the interpolating function that returns the value of log_Lfrac_min=log(Lmin/L*) for an apparent magnitude limit m_faint at an arbitrary redshift z.
-    lLfrac_min_func = interpolate.interp1d(z_mstar, lLfrac_min_table)
+    #lLfrac_min_func = interpolate.interp1d(z_mstar, lLfrac_min_table)
+    lLfrac_min_func = interpolate.interp1d(z_mstar, -0.4*(m_faint-mstar))
 
     #Now create the interpolating function that returns the value of Lfrac_max=Lmax/L* for an apparent magnitude limit m_bright at an arbitrary redshift z. A special case here is that m_bright can be specified as -np.inf to indicate no upper limit to the integration. In that case, we simply create a lambda function that for any value of redshift returns L/L* = infinite (np.inf).
     if np.isinf(m_bright):
@@ -146,4 +191,4 @@ def Nqso(zmin, zmax, m_bright, m_faint, LSSTfilter, qlf, area=4.*np.pi*u.sr, mst
         return np.nan
 
     #Carry out the calculation.
-    return area.to(u.sr).value * quad(dN_dz, zmin, zmax, args=(lLfrac_min_func, lLfrac_max_func, LSSTfilter, qlf, cosmo), epsabs=1e-1, epsrel=1e-3)[0]
+    return area.to(u.sr).value * quad(dN_dz, zmin, zmax, args=(lLfrac_min_func, lLfrac_max_func, LSSTfilter, qlf, cosmo, lLfrac_min_Mi_func), epsabs=1e-1, epsrel=1e-3)[0]

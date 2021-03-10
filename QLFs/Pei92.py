@@ -3,6 +3,7 @@
 from astropy.table import Table
 import astropy.units as u
 from scipy.interpolate import interp1d
+import numpy as np
 
 import os
 import re
@@ -33,7 +34,24 @@ class P92_Extinction(object):
         Erat    = extinction_curves['E_rat_'+red_type]
         self.xi_func = interp1d(lam.value, (Erat+self.R_V[red_type])/(1+self.R_V[red_type]), fill_value='extrapolate')
 
+        #Also, load the best-fit model.
+        self.xi_fit_table = Table.read(root_path+"/QLFs/Pei92_xi_fit_{}.txt".format(red_type), format='ascii')
+
+        self.a = self.xi_fit_table['a']
+        self.b = self.xi_fit_table['b']
+        self.n = self.xi_fit_table['n']
+        self.lam_fit = self.xi_fit_table['lam']
+
         return
 
     def xi(self,lam):
         return self.xi_func(lam.to(u.um).value)
+
+    def xi_fit(self, lam):
+        if isinstance(lam, np.ndarray):
+            lam2D = np.tile(lam.to(u.micron).value, [6, 1]).T
+            x = lam2D/self.lam_fit
+            return np.sum(self.a/(x**self.n+x**-self.n+self.b), axis=1)
+        else:
+            x = lam.to(u.micron).value/self.lam_fit
+            return np.sum(self.a/(x**self.n+x**-self.n+self.b))

@@ -3,6 +3,11 @@ import astropy.units as u
 from astropy.constants import L_sun
 from scipy.interpolate import interp1d
 
+"""
+This version of the script is very similar to Phi_Obs.py, but implements the NH convolution in a manner that is more easy to think about, although the results are close to identical.
+
+"""
+
 def get_Lfrac_lam(Lfrac, Lstar_10, qlf):
     """
     This function returns L_lam(L)/L_lam(Lstar). This function is only valid for UV/optical wavelengths, were we assume the conversion factors are just proportional to the B-band conversion.
@@ -79,7 +84,7 @@ def get_phi_lam_obs(z, qlf, lLfrac_lam_obs_min, lLfrac_lam_obs_max, lam_eff_filt
 
     #Set the grid in bolometric L/Lstar.
     lLfrac_min = -3.0
-    lLfrac_max =  3.0 #10.0
+    lLfrac_max =  3.0#10.0
     dlLfrac    =  0.01
     lLfrac     = np.arange(lLfrac_min,lLfrac_max,dlLfrac)
     Lfrac      = 10.**lLfrac
@@ -92,6 +97,7 @@ def get_phi_lam_obs(z, qlf, lLfrac_lam_obs_min, lLfrac_lam_obs_max, lam_eff_filt
     Lfrac_lam    = get_Lfrac_lam(Lfrac, Lstar_10, qlf)
     lLfrac_lam   = np.log10(Lfrac_lam)
     #dlLfrac_lam  = dlLfrac/jacobian(Lfrac, Lstar_10, qlf)
+    get_lLfrac  = interp1d(lLfrac_lam, lLfrac, fill_value='extrapolate')
 
     #Since there is a natural dispersion to the bolometric corrections, we convolve phi_lam with the uncertainty function to take it into account.
     phi_lam_2D        = np.tile(phi_lam, (len(phi_lam), 1))
@@ -122,34 +128,22 @@ def get_phi_lam_obs(z, qlf, lLfrac_lam_obs_min, lLfrac_lam_obs_max, lam_eff_filt
     ltheta_fact = 0.4*qlf.dgr(z).to(u.cm**2).value*1e22 * qlf.xi(lam_eff_filter/(1.+z))
     ltheta = 10.**(lNH-22) * ltheta_fact
     ltheta_2D = np.tile(ltheta, [len(lLfrac_lam_obs), 1])
+    #ltheta_2D = np.tile(ltheta, [len(lLfrac_lam_sig), 1])
 
     #For each NH, we will need to evaluate the unreddened QLF at different luminosities. So let's go ahead and make the array of the lLfracs_lam_sig at which we will need to evaluate.
     lLfrac_lam_sig_eval_2D = np.tile(lLfrac_lam_obs, [len(lNH), 1]).T + ltheta_2D
 
     #This function is the probability of a certain NH for a given bolometric luminosity. We will need to recalculate Lfrac to make sure it shows the correct bolometric luminosity at the evaluation point.
-    lLfrac_eval_2D = np.tile(lLfrac, [len(lNH),1]).T
-    log_NH_2D = np.tile(lNH, [len(lLfrac), 1])
+    lLfrac_eval_2D = get_lLfrac(lLfrac_lam_sig_eval_2D)
+    log_NH_2D = np.tile(lNH, [len(lLfrac_lam_obs),1])
     f_NH = qlf.fNH(log_NH_2D, lLfrac_eval_2D, Lstar_10, z)
-    #f_NH = qlf.fNH(lNH, Lfrac, Lstar_10, z).T
-    #print(np.sum(f_NH*dlNH, axis=1))
 
-    #Now, for every NH, we will need to interpolate/extrapolate the QLF to evaluate it in the needed places.
-    phi_lam_sig_f_NH_eval_2D = np.zeros((len(lLfrac_lam_obs),len(lNH)))
-    for i in range(len(lNH)):
-        #phi_lam_sig_f_NH_interp = interp1d(lLfrac_lam_sig, phi_lam_sig*f_NH[:,i], bounds_error=False, fill_value = 0.)
-        log_phi_lam_sig_f_NH_interp = interp1d(lLfrac_lam_sig[5:-5], np.log10(phi_lam_sig[5:-5].value*f_NH[5:-5,i]+1e-32), kind='linear', fill_value = 'extrapolate')
-        #phi_lam_sig_f_NH_eval_2D[:,i] = phi_lam_sig_f_NH_interp(lLfrac_lam_sig_eval_2D[:,i])
-        phi_lam_sig_f_NH_eval_2D[:,i] = 10.**(log_phi_lam_sig_f_NH_interp(lLfrac_lam_sig_eval_2D[:,i]))
+    #Now create an interpolated/extrapolated version of phi_lam_sig to evaluate in these new positions.
+    log_phi_lam_sig_interp = interp1d(lLfrac_lam_sig, np.log10(phi_lam_sig.value), kind='linear', fill_value = 'extrapolate')
 
-    phi_lam_obs = np.sum(phi_lam_sig_f_NH_eval_2D * dlNH, axis=1) *  phi_lam_sig.unit
+    #Evaluate it and integrate it along f_NH*dlNH.
+    phi_lam_sig_eval_2D = 10.**(log_phi_lam_sig_interp(lLfrac_lam_sig_eval_2D))
+    phi_lam_obs = np.sum(phi_lam_sig_eval_2D * f_NH * dlNH, axis=1)*phi_lam_sig.unit
 
-    # import matplotlib.pyplot as plt
-    # plt.plot(lLfrac, qlf.phi_bol_Lfrac(10.**lLfrac, z))
-    # plt.plot(lLfrac_lam, phi_lam)
-    # plt.plot(lLfrac_lam_sig, phi_lam_sig)
-    # plt.plot(lLfrac_lam_obs, phi_lam_obs)
-    # #plt.xscale('log')
-    # plt.yscale('log')
-    # plt.show()
-
+    #Return the observed QLF.
     return phi_lam_obs, dlLfrac_lam_obs*u.dex

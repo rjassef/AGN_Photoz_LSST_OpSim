@@ -1,5 +1,5 @@
 import numpy as np
-from astropy.constants import L_sun
+from astropy.constants import L_sun, c
 import astropy.units as u
 
 from scipy.special import erf
@@ -72,7 +72,9 @@ class QLF(object):
         self.k_B = np.array([-0.361, -0.0063])
 
         #Coefficients to calculate the bolometric correction dispersion for B-band.
-        self.sig1_B, self.sig2_B, self.logL0_B, self.sig3_B = -0.383, 0.405, 42.39, 2.378
+        self.sig1_B , self.sig2_B , self.logL0_B , self.sig3_B  = -0.383, 0.405, 42.39, 2.378
+        self.sig1_15, self.sig2_15, self.logL0_15, self.sig3_15 = -0.338, 0.407, 42.16, 2.193
+        self.sig1_SX, self.sig2_SX, self.logL0_SX, self.sig3_SX = 0.080, 0.180, 44.16, 1.496
 
         #Coefficients to calculate the bolometric correction for the 2-10keV band.
         self.c_HX = np.array([4.073, 12.60])
@@ -247,13 +249,19 @@ class QLF(object):
         return Lfrac*Lstar_10*1e10*L_sun/bc
 
     def xi(self, lam):
-        return self.red_model.xi(lam)
+        return self.red_model.xi_fit(lam)
 
-    def fNH(self, log_NH, Lfrac, Lstar_10=None, z=None):
+    def fNH(self, log_NH_2D, lLfrac, Lstar_10=None, z=None):
 
         #Get the hard x-ray luminosity for each Lfrac in units of 10^44 erg/s. This will be useful later.
+        #Lfrac = 10.**lLfrac
+        lLfrac_use = np.where(lLfrac>10.0, 10., lLfrac)
+        lLfrac_use = np.where(lLfrac_use<-10.0, -10., lLfrac_use)
+        Lfrac = 10**(lLfrac_use)
         Lx = self.L_x_Lfrac(Lfrac, Lstar_10)
         lLx_44 = np.log10(Lx/(u.erg/u.s)).value - 43.75
+        lLx_44 = np.where(lLfrac >  10,  np.inf, lLx_44)
+        lLx_44 = np.where(lLfrac < -10, -np.inf, lLx_44)
 
         f_CTK = 1.0
         eps = 1.7
@@ -292,15 +300,15 @@ class QLF(object):
         f_23_24 /= (1.0+f_CTK*psi)
         f_24_26 /= (1.0+f_CTK*psi)
 
-        f_NH = np.zeros((len(log_NH), len(lLx_44)))
-        f_20_21 = np.tile(f_20_21, [len(log_NH),1])
-        f_21_22 = np.tile(f_21_22, [len(log_NH),1])
-        f_22_23 = np.tile(f_22_23, [len(log_NH),1])
-        f_23_24 = np.tile(f_23_24, [len(log_NH),1])
-        f_24_26 = np.tile(f_24_26, [len(log_NH),1])
-
-        log_NH_2D = np.tile(log_NH, [len(lLx_44),1]).T
-
+        # f_NH = np.zeros((len(log_NH), len(lLx_44)))
+        # f_20_21 = np.tile(f_20_21, [len(log_NH),1])
+        # f_21_22 = np.tile(f_21_22, [len(log_NH),1])
+        # f_22_23 = np.tile(f_22_23, [len(log_NH),1])
+        # f_23_24 = np.tile(f_23_24, [len(log_NH),1])
+        # f_24_26 = np.tile(f_24_26, [len(log_NH),1])
+        #
+        # log_NH_2D = np.tile(log_NH, [len(lLx_44),1]).T
+        f_NH = np.zeros(log_NH_2D.shape)
         f_NH = np.where((log_NH_2D>=20.0) & (log_NH_2D<21.0) , f_20_21, f_NH)
         f_NH = np.where((log_NH_2D>=21.0) & (log_NH_2D<22.0) , f_21_22, f_NH)
         f_NH = np.where((log_NH_2D>=22.0) & (log_NH_2D<23.0) , f_22_23, f_NH)
@@ -310,9 +318,9 @@ class QLF(object):
         return f_NH
 
 
-    def get_sigma(self, Lfrac, Lstar_10):
+    def get_sigma(self, Lfrac, Lstar_10, lam):
         """
-        This function calculates the dispersion of the bolometric correction for B-band.
+        This function calculates the dispersion of the bolometric correction.
 
         Parameters
         ----------
@@ -323,11 +331,59 @@ class QLF(object):
         Lstar_10: float
             Value of Lstar in units of 10^10 Lsun.
 
+        lam: float with astropy.units of wavelength.
+            Wavelength at which we want to evaluate the dispersion.
+
         """
         lLstar_erg_s = np.log10(Lstar_10) + 10 + np.log10(L_sun.to(u.erg/u.s).value)
-        erf_arg = np.log10(Lfrac) - self.logL0_B + lLstar_erg_s
-        erf_arg /= ((2.)**0.5 * self.sig3_B)
-        return self.sig2_B + self.sig1_B*0.5*(1.+erf(erf_arg))
+        lL_erg_s = np.log10(Lfrac) + lLstar_erg_s
+        lam_15 = 15.0*u.um
+        lam_B  = 4400.*u.AA
+        lam_SX = (c/(0.5 * 2.418e17*u.Hz))
+        if lam < 4400.*u.AA:
+            s1 = self.get_sigma_pre(lL_erg_s, "15")
+            s2 = self.get_sigma_pre(lL_erg_s, "BB")
+            lam1 = lam_15
+            lam2 = lam_B
+        else:
+            s1 = self.get_sigma_pre(lL_erg_s, "BB")
+            s2 = self.get_sigma_pre(lL_erg_s, "SX")
+            lam1 = lam_B
+            lam2 = lam_SX
+        sigma = s1 + (s2-s1)*np.log10((lam1/lam).to(1.).value) / np.log10((lam1/lam2).to(1.).value)
+        return sigma
+
+
+    def get_sigma_pre(self, lL_erg_s, mode):
+        """
+        This function calculates the dispersion of the bolometric correction in different bands.
+
+        Parameters
+        ----------
+
+        lL_erg_s: numpy array
+            Values of log L in erg/s
+
+        mode: string
+            Can be BB, SX or 15.
+        """
+        if mode=="BB":
+            erf_arg = lL_erg_s - self.logL0_B
+            erf_arg /= ((2.)**0.5 * self.sig3_B)
+            sig1 = self.sig1_B
+            sig2 = self.sig2_B
+        elif mode=="SX":
+            erf_arg = lL_erg_s - self.logL0_SX
+            erf_arg /= ((2.)**0.5 * self.sig3_SX)
+            sig1 = self.sig1_SX
+            sig2 = self.sig2_SX
+        elif mode=="15":
+            erf_arg = lL_erg_s - self.logL0_15
+            erf_arg /= ((2.)**0.5 * self.sig3_15)
+            sig1 = self.sig1_15
+            sig2 = self.sig2_15
+        return sig2 + sig1*0.5*(1.+erf(erf_arg))
+
 
     def dgr(self, z):
         return  self.dgr_local * 10.**(0.35 + 0.93*np.exp(-0.43*z)-1.05)/10.**(0.35+0.93-1.05)

@@ -67,7 +67,8 @@ class QLF(object):
         self.Lc = 10.**self.log_Lc * self.Lstar_units
 
         #Set the reddening model.
-        self.red_model = P92_Extinction("MW")
+        #self.red_model = P92_Extinction("MW")
+        self.red_model = P92_Extinction("SMC")
 
         #Coefficients to calculate the bolometric correction for B-band.
         self.c_B = np.array([6.25, 9.00])
@@ -254,14 +255,21 @@ class QLF(object):
 
 
     def xi(self, lam):
-        return self.red_model.xi(lam)
+        return self.red_model.xi_fit(lam)
 
 
-    def fNH(self, log_NH, Lfrac, Lstar_10, z):
+    def fNH(self, log_NH, lLfrac, Lstar_10, z):
 
         #Get the hard x-ray luminosity for each Lfrac in units of 10^44 erg/s. This will be useful later.
+        #Lx = self.L_x_Lfrac(Lfrac, Lstar_10)
+        #lLx_44 = np.log10(Lx/(1e44*u.erg/u.s)).value
+        lLfrac_use = np.where(lLfrac>10.0, 10., lLfrac)
+        lLfrac_use = np.where(lLfrac_use<-10.0, -10., lLfrac_use)
+        Lfrac = 10**(lLfrac_use)
         Lx = self.L_x_Lfrac(Lfrac, Lstar_10)
-        lLx_44 = np.log10(Lx/(1e44*u.erg/u.s)).value
+        lLx_44 = np.log10(Lx/(u.erg/u.s)).value - 44.0
+        lLx_44 = np.where(lLfrac >  10,  np.inf, lLx_44)
+        lLx_44 = np.where(lLfrac < -10, -np.inf, lLx_44)
 
         #logLx = np.log10(self.L_x(Lfrac*10.**(self.log_Lstar(z))*self.Lstar_units)/(1e44*u.erg/u.s))
         eps = 1.7
@@ -281,22 +289,28 @@ class QLF(object):
         f_med = f_med / (1. + f_compton)
         f_hig = f_hig / (1. + f_compton)
 
-        f_NH = np.zeros((len(log_NH), len(lLx_44)))
-        f_low = np.tile(f_low, [len(log_NH),1])
-        f_med = np.tile(f_med, [len(log_NH),1])
-        f_hig = np.tile(f_hig, [len(log_NH),1])
-        f_compton = np.tile(f_compton, [len(log_NH),1])
+        #f_NH = np.zeros((len(log_NH), len(lLx_44)))
+        #f_low = np.tile(f_low, [len(log_NH),1])
+        #f_med = np.tile(f_med, [len(log_NH),1])
+        #f_hig = np.tile(f_hig, [len(log_NH),1])
+        #f_compton = np.tile(f_compton, [len(log_NH),1])
 
-        log_NH_2D = np.tile(log_NH, [len(lLx_44),1]).T
+        #log_NH_2D = np.tile(log_NH, [len(lLx_44),1]).T
 
-        f_NH = np.where((log_NH_2D>=20.0) & (log_NH_2D<=20.5), f_low, f_NH)
-        f_NH = np.where((log_NH_2D>20.5) & (log_NH_2D<=23.0), f_med, f_NH)
-        f_NH = np.where((log_NH_2D>23.0) & (log_NH_2D<=24.0), f_hig, f_NH)
-        f_NH = np.where((log_NH_2D>24.0) & (log_NH_2D<=25.0), f_compton, f_NH)
+        # f_NH = np.where((log_NH_2D>=20.0) & (log_NH_2D<=20.5), f_low, f_NH)
+        # f_NH = np.where((log_NH_2D>20.5) & (log_NH_2D<=23.0), f_med, f_NH)
+        # f_NH = np.where((log_NH_2D>23.0) & (log_NH_2D<=24.0), f_hig, f_NH)
+        # f_NH = np.where((log_NH_2D>24.0) & (log_NH_2D<=25.0), f_compton, f_NH)
+
+        f_NH = np.zeros(Lfrac.shape)
+        f_NH = np.where((log_NH>=20.0) & (log_NH<=20.5), f_low, f_NH)
+        f_NH = np.where((log_NH> 20.5) & (log_NH<=23.0), f_med, f_NH)
+        f_NH = np.where((log_NH> 23.0) & (log_NH<=24.0), f_hig, f_NH)
+        f_NH = np.where((log_NH> 24.0) & (log_NH<=25.0), f_compton, f_NH)
 
         return f_NH
 
-    def get_sigma(self, Lfrac, Lstar_10):
+    def get_sigma(self, Lfrac, Lstar_10, lam):
         """
         This function calculates the dispersion of the bolometric correction for B-band.
 
@@ -308,6 +322,9 @@ class QLF(object):
 
         Lstar_10: float
             Value of Lstar in units of 10^10 Lsun.
+
+        lam: float
+            Wavelength at which to get sigma. Not currently used, but necessary for compatibility.
 
         """
         return self.sig1_B*(Lstar_10*10 * Lfrac)**self.beta_B + self.sig2_B

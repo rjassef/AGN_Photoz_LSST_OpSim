@@ -3,6 +3,10 @@ import astropy.units as u
 from astropy.constants import L_sun
 from scipy.interpolate import interp1d
 
+"""
+This version of the script matches what is done in the Shen20 pubtools, and gives very similar results. However, I think this is actually something I don't follow in their implementation in how Lx is calculated for f(NH; Lx, z). 
+"""
+
 def get_Lfrac_lam(Lfrac, Lstar_10, qlf):
     """
     This function returns L_lam(L)/L_lam(Lstar). This function is only valid for UV/optical wavelengths, were we assume the conversion factors are just proportional to the B-band conversion.
@@ -111,45 +115,37 @@ def get_phi_lam_obs(z, qlf, lLfrac_lam_obs_min, lLfrac_lam_obs_max, lam_eff_filt
     dlNH    = 0.01
     lNH     = np.arange(lNH_min, lNH_max, dlNH)
 
-    #This is the output grid.
+    #Following the approach of the Shen20 pubtools, we will now calculate phi_lam_obs for the same luminosity fractions for which we have phi_lam.
+    lLfrac_lam_obs_grid = lLfrac_lam_sig
+
+    #Determine the obscuration function in the observed band.
+    ltheta_fact = 0.4*qlf.dgr(z).to(u.cm**2).value*1e22 * qlf.xi(lam_eff_filter/(1.+z))
+    ltheta = 10.**(lNH-22) * ltheta_fact
+    ltheta_2D = np.tile(ltheta, [len(lLfrac_lam_obs_grid), 1])
+
+    #For each NH, we will need to evaluate the unreddened QLF at a luminosity of lLfrac_lam_obs_grid + ltheta. So let's build it as a 2D array in which each row has the same lLfrac_lam_obs_grid value modified by the reddening correction (i.e., unreddened assuming different levels of obscuration).
+    lLfrac_lam_sig_eval_2D = np.tile(lLfrac_lam_obs_grid, [len(lNH), 1]).T + ltheta_2D
+
+    #Now, evaluate the f_NH function, following the S20 pubtools. Note: I think this actually wrong. f_NH should be evaluated at the intrinsic luminosity fraction of the reddening corrected luminosity. Here, we just assume that the same intrinsic lLfrac corresponds to the observed lLfrac_lam_obs_grid value for all NHs.
+    lLfrac_eval_2D = np.tile(lLfrac, [len(lNH),1]).T
+    log_NH_2D = np.tile(lNH, [len(lLfrac_lam_obs_grid), 1])
+    f_NH = qlf.fNH(log_NH_2D, lLfrac_eval_2D, Lstar_10, z)
+
+    #Extrapolate phi_lam_sig so that we can evaluate it in the new positions.
+    log_phi_lam_sig_interp = interp1d(lLfrac_lam_sig, np.log10(phi_lam_sig.value), kind='linear', fill_value = 'extrapolate')
+
+    #Evaluate it an produce phi_lam_obs_grid by integrating over f_NH dlNH.
+    phi_lam_sig_eval_2D = 10.**(log_phi_lam_sig_interp(lLfrac_lam_sig_eval_2D))
+    phi_lam_obs_grid= np.sum(phi_lam_sig_eval_2D * f_NH * dlNH, axis=1)
+
+    #Now, this is the output grid we actually want.
     nlLfrac_lam_obs    = 100
     dlLfrac_lam_obs    = (lLfrac_lam_obs_max-lLfrac_lam_obs_min)/nlLfrac_lam_obs
     if dlLfrac_lam_obs > 0.1:
         dlLfrac_lam_obs    = 0.1
     lLfrac_lam_obs     = np.arange(lLfrac_lam_obs_min, lLfrac_lam_obs_max + 0.1*dlLfrac_lam_obs, dlLfrac_lam_obs)
 
-    #Now, get the obscuration function in the observed band.
-    ltheta_fact = 0.4*qlf.dgr(z).to(u.cm**2).value*1e22 * qlf.xi(lam_eff_filter/(1.+z))
-    ltheta = 10.**(lNH-22) * ltheta_fact
-    ltheta_2D = np.tile(ltheta, [len(lLfrac_lam_obs), 1])
-
-    #For each NH, we will need to evaluate the unreddened QLF at different luminosities. So let's go ahead and make the array of the lLfracs_lam_sig at which we will need to evaluate.
-    lLfrac_lam_sig_eval_2D = np.tile(lLfrac_lam_obs, [len(lNH), 1]).T + ltheta_2D
-
-    #This function is the probability of a certain NH for a given bolometric luminosity. We will need to recalculate Lfrac to make sure it shows the correct bolometric luminosity at the evaluation point.
-    lLfrac_eval_2D = np.tile(lLfrac, [len(lNH),1]).T
-    log_NH_2D = np.tile(lNH, [len(lLfrac), 1])
-    f_NH = qlf.fNH(log_NH_2D, lLfrac_eval_2D, Lstar_10, z)
-    #f_NH = qlf.fNH(lNH, Lfrac, Lstar_10, z).T
-    #print(np.sum(f_NH*dlNH, axis=1))
-
-    #Now, for every NH, we will need to interpolate/extrapolate the QLF to evaluate it in the needed places.
-    phi_lam_sig_f_NH_eval_2D = np.zeros((len(lLfrac_lam_obs),len(lNH)))
-    for i in range(len(lNH)):
-        #phi_lam_sig_f_NH_interp = interp1d(lLfrac_lam_sig, phi_lam_sig*f_NH[:,i], bounds_error=False, fill_value = 0.)
-        log_phi_lam_sig_f_NH_interp = interp1d(lLfrac_lam_sig[5:-5], np.log10(phi_lam_sig[5:-5].value*f_NH[5:-5,i]+1e-32), kind='linear', fill_value = 'extrapolate')
-        #phi_lam_sig_f_NH_eval_2D[:,i] = phi_lam_sig_f_NH_interp(lLfrac_lam_sig_eval_2D[:,i])
-        phi_lam_sig_f_NH_eval_2D[:,i] = 10.**(log_phi_lam_sig_f_NH_interp(lLfrac_lam_sig_eval_2D[:,i]))
-
-    phi_lam_obs = np.sum(phi_lam_sig_f_NH_eval_2D * dlNH, axis=1) *  phi_lam_sig.unit
-
-    # import matplotlib.pyplot as plt
-    # plt.plot(lLfrac, qlf.phi_bol_Lfrac(10.**lLfrac, z))
-    # plt.plot(lLfrac_lam, phi_lam)
-    # plt.plot(lLfrac_lam_sig, phi_lam_sig)
-    # plt.plot(lLfrac_lam_obs, phi_lam_obs)
-    # #plt.xscale('log')
-    # plt.yscale('log')
-    # plt.show()
-
+    #Interpolate/extrapolate phi_lam_obs to put it in the required output grid and return the resulting QLF.
+    lphi_lam_obs_interp = interp1d(lLfrac_lam_obs_grid, np.log10(phi_lam_obs_grid), fill_value='extrapolate')
+    phi_lam_obs = 10.**(lphi_lam_obs_interp(lLfrac_lam_obs))*phi_lam_sig.unit
     return phi_lam_obs, dlLfrac_lam_obs*u.dex
