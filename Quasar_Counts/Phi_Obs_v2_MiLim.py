@@ -3,6 +3,13 @@ import astropy.units as u
 from astropy.constants import L_sun
 from scipy.interpolate import interp1d
 
+"""
+This version of the script is very similar to Phi_Obs.py, but implements the NH convolution in a manner that is more easy to think about, although the results are close to identical.
+
+Additionally, it applies the Mi_lim in L_bol space, which I think it is the more correct thing to do.
+
+"""
+
 def get_Lfrac_lam(Lfrac, Lstar_10, qlf):
     """
     This function returns L_lam(L)/L_lam(Lstar). This function is only valid for UV/optical wavelengths, were we assume the conversion factors are just proportional to the B-band conversion.
