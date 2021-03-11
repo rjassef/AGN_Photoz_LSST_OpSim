@@ -14,43 +14,13 @@ sys.path.append(root_path+"/Quasar_Counts/")
 #from Phi_Obs_v2_MiLim import get_phi_lam_obs, get_Lfrac_lam
 from Phi_Obs_v3_MiLim import get_phi_lam_obs, get_Lfrac_lam
 
+sys.path.append(root_path+"/Filter_Curves/")
+from lam_eff import lam_eff
+
 """
 This version of Nqso applies the M_lim in Lbol space instead of in the observed wavelength space.
 
 """
-
-def get_Lfrac_lam_vec(Lfrac, Lstar_10, qlf):
-    """
-    This function returns L_lam(L)/L_lam(Lstar). This function is only valid for UV/optical wavelengths, were we assume the conversion factors are just proportional to the B-band conversion.
-
-    Parameters
-    ----------
-
-    Lfrac: numpy array
-        Values of L/Lstar for which to calculate Lfrac_lam = L_lam/L_lam(Lstar)
-
-    Lstar_10: float
-        Value of Lstar in units of 10^10 Lsun.
-
-    qlf: QLF object
-        QLF being used.
-
-    """
-    D1 = qlf.c_B[0] * Lstar_10**qlf.k_B[0]
-    D2 = qlf.c_B[1] * Lstar_10**qlf.k_B[1]
-    top    = D1+D2
-    bottom = D1*Lfrac**(qlf.k_B[0]-1) + D2*Lfrac**(qlf.k_B[1]-1)
-
-    return top/bottom
-
-#LSST Filter wavelengths. Will be useful for the obscuation function we will need to set up.
-lam_eff = {'LSSTu': 3751.36*u.AA,
-           'LSSTg': 4741.64*u.AA,
-           'LSSTr': 6173.23*u.AA,
-           'LSSTi': 7501.62*u.AA,
-           'LSSTz': 8679.19*u.AA,
-           'LSSTy': 9711.53*u.AA,
-          }
 
 #Integrand. For a given redshift, and functions that determines the minimum and maximum Lfrac=L/L* observable at a given redshift, this function returns the differential number of quasars per unit redshift per sterradian.
 def dN_dz(z, lLfrac_min_func, lLfrac_max_func, LSSTfilter, qlf, cosmo, lLfrac_min_Mi_func=None):
