@@ -68,3 +68,5 @@ for table in tables[1:]:
         i = np.argwhere(master_table['run']==run)[0][0]
         for j,col in enumerate(header[table][1:]):
             master_table[col][i] = mds_table[col][k]
+
+master_table.write("metrics_database.fits", format='fits')
