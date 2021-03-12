@@ -9,6 +9,7 @@ root_path = re.search("(.*/AGN_Photoz_LSST_OpSim)/*",os.getcwd()).group(1)
 
 header = dict()
 
+#First, add the the u-band depths analysis.
 header["/uband_depth/Table_ug_band_depth.txt"] = [
     "run",
     "u_depth_3sig",
@@ -17,6 +18,21 @@ header["/uband_depth/Table_ug_band_depth.txt"] = [
     "g_depth_5sig_rank"
 ]
 
+#Next, add the DDFs runs.
+DDFs = ['AllDDFs', 'ECDFS', 'COSMOS', 'XMM-LSS', 'ELAISS1', 'EDFS']
+for DDF in DDFs:
+    for filter in ["u","g"]:
+        sig = "5"
+        if filter=="u":
+            sig = "3"
+        header["/DDFs_uband_depth/Table_DDF_{0}_band_depth.{1}.txt".format(filter, DDF)] = [
+            "run",
+            "{0}_{1}_depth_{2}sig".format(DDF,filter,sig),
+            "{0}_{1}_depth_{2}sig_rank".format(DDF,filter,sig)
+        ]
+
+
+#Next, add the color excess runs.
 for z in ["1.0","2.0","3.0"]:
     header["/color_excess/Table_color_excess_z{}.txt".format(z)] = [
         "run",
@@ -32,6 +48,7 @@ for z in ["1.0","2.0","3.0"]:
         "cex_zy_{}_rank".format(z)
     ]
 
+#Finally, add the mean nights runs.
 header["/mean_time_between_obs/Table_mean_nights_between_bands.txt"] = [
     "run",
     "nights_ug",
@@ -69,4 +86,4 @@ for table in tables[1:]:
         for j,col in enumerate(header[table][1:]):
             master_table[col][i] = mds_table[col][k]
 
-master_table.write("metrics_database.fits", format='fits')
+master_table.write("metrics_database.fits", format='fits', overwrite=True)
