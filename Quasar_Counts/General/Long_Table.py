@@ -24,7 +24,7 @@ from lam_eff import lam_eff
 
 ###
 
-def get_Nqso(z, m, LSSTfilter, qlf, mstar_data, Mi_lim, m_index_use, area, cosmo):
+def get_Nqso(z, m, LSSTfilter, qlf, mstar_data, Mi_lim, area, cosmo, m_index_use):
     N = np.zeros((len(m_index_use),len(z)-1))
     for j,i in enumerate(m_index_use):
         for k in range(len(z[:-1])):
