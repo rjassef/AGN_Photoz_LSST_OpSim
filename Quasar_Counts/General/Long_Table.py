@@ -24,11 +24,11 @@ from lam_eff import lam_eff
 
 ###
 
-def get_Nqso(z, m, LSSTfilter, qlf, mstar_data, Mi_lim, m_index_use):
+def get_Nqso(z, m, LSSTfilter, qlf, mstar_data, Mi_lim, m_index_use, area, cosmo):
     N = np.zeros((len(m_index_use),len(z)-1))
     for j,i in enumerate(m_index_use):
         for k in range(len(z[:-1])):
-            N[j,k] = Nqso(z[k], z[k+1], m[i], m[i+1], LSSTfilter, qlf, mstar_data=mstar_data, Mi_lim=Mi_lim)
+            N[j,k] = Nqso(z[k], z[k+1], m[i], m[i+1], LSSTfilter, qlf, area=area, mstar_data=mstar_data, Mi_lim=Mi_lim, cosmo=cosmo)
     return N
 
 if len(sys.argv)!=4 and len(sys.argv)!=5:
@@ -71,7 +71,7 @@ m_index_use_split = np.array_split(m_index_use, Ncpu)
 
 Mi_lim = -20
 Pool = mp.Pool(Ncpu)
-func = partial(get_Nqso, z, m, LSSTfilter, qlf, mstar_data, Mi_lim)
+func = partial(get_Nqso, z, m, LSSTfilter, qlf, mstar_data, Mi_lim, area, cosmo)
 
 Output = Pool.map(func, m_index_use_split)
 Output = np.vstack(Output)
