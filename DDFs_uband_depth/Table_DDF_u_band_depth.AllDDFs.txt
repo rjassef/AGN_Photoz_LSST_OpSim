@@ -1,173 +1,173 @@
-dcr_nham1_ugri_v1.5_10yrs                               27.46  63.6
-rolling_mod6_sdf_0.20_v1.5_10yrs                        27.50  85.5
-u60_v1.5_10yrs                                          27.60  97.1
-footprint_stuck_rollingv1.5_10yrs                       27.44  55.5
-daily_ddf_v1.5_10yrs                                    27.56  94.2
-alt_roll_mod2_dust_sdf_0.20_v1.5_10yrs                  27.42  49.7
-goodseeing_gz_v1.5_10yrs                                27.49  80.9
-footprint_standard_goalsv1.5_10yrs                      27.50  83.2
-footprint_big_sky_dustv1.5_10yrs                        27.47  73.4
-footprint_bluer_footprintv1.5_10yrs                     27.50  84.4
-twilight_neo_mod4_v1.5_10yrs                            27.53  90.2
-goodseeing_gi_v1.5_10yrs                                27.50  82.1
-dcr_nham2_ugr_v1.5_10yrs                                27.52  89.0
-short_exp_5ns_5expt_v1.5_10yrs                          27.62  97.7
-goodseeing_griz_v1.5_10yrs                              27.49  80.3
-twilight_neo_mod1_v1.5_10yrs                            27.67  98.3
-bulges_cadence_bulge_wfd_v1.5_10yrs                     27.48  74.6
-third_obs_pt120v1.5_10yrs                               27.47  70.5
-wfd_depth_scale0.95_v1.5_10yrs                          27.43  52.0
-footprint_no_gp_northv1.5_10yrs                         27.41  47.4
-footprint_big_skyv1.5_10yrs                             27.52  88.4
-footprint_newBv1.5_10yrs                                27.49  78.0
-baseline_2snaps_v1.5_10yrs                              27.20   6.9
-footprint_big_sky_nouiyv1.5_10yrs                       27.41  48.6
-twilight_neo_mod3_v1.5_10yrs                            27.53  90.8
-greedy_footprint_v1.5_10yrs                             27.45  58.4
-wfd_depth_scale0.90_v1.5_10yrs                          27.44  53.2
-dcr_nham1_ug_v1.5_10yrs                                 27.47  72.8
-rolling_mod2_sdf_0.10_v1.5_10yrs                        27.54  92.5
-footprint_newAv1.5_10yrs                                27.48  76.3
-rolling_mod3_sdf_0.10_v1.5_10yrs                        27.49  79.8
-var_expt_v1.5_10yrs                                     27.40  46.2
-bulges_i_heavy_v1.5_10yrs                               27.43  51.4
-wfd_depth_scale0.75_v1.5_10yrs                          27.48  75.7
-dcr_nham2_ug_v1.5_10yrs                                 27.45  59.5
-goodseeing_i_v1.5_10yrs                                 27.46  61.8
-short_exp_2ns_5expt_v1.5_10yrs                          27.45  61.3
-footprint_add_mag_cloudsv1.5_10yrs                      27.44  54.9
-agnddf_v1.5_10yrs                                       28.06  99.4
-wfd_depth_scale0.70_v1.5_10yrs                          27.46  68.2
-alt_dust_v1.5_10yrs                                     27.48  74.0
-baseline_v1.5_10yrs                                     27.47  71.1
-wfd_depth_scale0.65_v1.5_10yrs                          27.44  56.1
-descddf_v1.5_10yrs                                      27.03   2.9
-bulges_bs_v1.5_10yrs                                    27.44  53.8
-baseline_samefilt_v1.5_10yrs                            27.50  85.0
-short_exp_5ns_1expt_v1.5_10yrs                          27.53  91.9
-wfd_depth_scale0.85_v1.5_10yrs                          27.46  66.5
-dcr_nham2_ugri_v1.5_10yrs                               27.47  69.9
-third_obs_pt45v1.5_10yrs                                27.46  68.8
-wfd_depth_scale0.80_v1.5_10yrs                          27.50  83.8
-bulges_cadence_i_heavy_v1.5_10yrs                       27.43  52.6
-rolling_mod6_sdf_0.10_v1.5_10yrs                        27.51  86.7
-footprint_gp_smoothv1.5_10yrs                           27.47  69.4
-twilight_neo_mod2_v1.5_10yrs                            27.59  96.0
-third_obs_pt15v1.5_10yrs                                27.47  71.7
-bulges_bulge_wfd_v1.5_10yrs                             27.46  64.2
-goodseeing_gri_v1.5_10yrs                               27.49  76.9
-rolling_mod3_sdf_0.20_v1.5_10yrs                        27.49  77.5
-short_exp_2ns_1expt_v1.5_10yrs                          27.55  93.1
-spiders_v1.5_10yrs                                      27.46  67.1
-third_obs_pt90v1.5_10yrs                                27.45  57.8
-dcr_nham1_ugr_v1.5_10yrs                                27.45  60.1
-third_obs_pt60v1.5_10yrs                                27.51  87.3
-rolling_mod2_sdf_0.20_v1.5_10yrs                        27.51  87.9
-bulges_cadence_bs_v1.5_10yrs                            27.48  75.1
-third_obs_pt30v1.5_10yrs                                27.52  89.6
-wfd_depth_scale0.99_v1.5_10yrs                          27.46  62.4
-roll_mod2_dust_sdf_0.20_v1.5_10yrs                      27.45  59.0
-baseline_nexp2_scaleddown_v1.6_10yrs                    27.25  15.0
-rolling_fpo_3nslice0.8_v1.6_10yrs                       27.44  54.3
-rolling_fpo_2nslice0.8_v1.6_10yrs                       27.49  79.2
-combo_dust_v1.6_10yrs                                   27.49  78.6
-ss_heavy_v1.6_10yrs                                     27.56  93.6
-rolling_fpo_6nslice0.9_v1.6_10yrs                       27.42  50.3
-baseline_nexp1_v1.6_10yrs                               27.46  63.0
-even_filters_g_v1.6_10yrs                               27.41  46.8
-rolling_fpo_2nslice1.0_v1.6_10yrs                       27.44  56.6
-rolling_fpo_3nslice1.0_v1.6_10yrs                       27.45  60.7
-ddf_heavy_v1.6_10yrs                                    28.10 100.0
-even_filters_altv1.6_10yrs                              27.46  67.6
-rolling_exgal_mod2_dust_sdf_0.80_v1.6_10yrs             27.49  81.5
-combo_dust_nexp2_v1.6_10yrs                             27.21   8.7
-dm_heavy_v1.6_10yrs                                     27.09   4.0
-even_filtersv1.6_10yrs                                  27.46  64.7
-mw_heavy_v1.6_10yrs                                     27.46  65.9
-rolling_fpo_6nslice1.0_v1.6_10yrs                       27.47  72.3
-baseline_nexp2_v1.6_10yrs                               27.17   5.8
-dm_heavy_nexp2_v1.6_10yrs                               26.86   1.7
-rolling_fpo_6nslice0.8_v1.6_10yrs                       27.42  50.9
-rolling_fpo_2nslice0.9_v1.6_10yrs                       27.44  57.2
-mw_heavy_nexp2_v1.6_10yrs                               27.21   7.5
-ss_heavy_nexp2_v1.6_10yrs                               27.28  19.1
-rolling_fpo_3nslice0.9_v1.6_10yrs                       27.41  49.1
-ddf_heavy_nexp2_v1.6_10yrs                              27.91  98.8
-rolling_exgal_mod2_dust_sdf_0.80_nexp2_v1.6_10yrs       27.17   5.2
-barebones_nexp2_v1.6_10yrs                              26.79   0.6
-barebones_v1.6_10yrs                                    27.09   4.6
-even_filters_alt_g_v1.6_10yrs                           27.46  65.3
-rolling_nm_scale0.6_nslice2_v1.7_10yrs                  27.33  41.0
-ddf_dither0.70_v1.7_10yrs                               27.31  33.5
-rolling_scale0.9_nslice3_v1.7_10yrs                     27.33  41.6
-ddf_dither1.00_v1.7_10yrs                               27.06   3.5
-ddf_dither0.05_v1.7_10yrs                               27.60  96.5
-euclid_dither2_v1.7_10yrs                               27.35  42.8
-ddf_dither0.00_v1.7_10yrs                               27.59  95.4
-twi_pairs_mixed_repeat_v1.7_10yrs                       27.29  24.3
-u_long_ms_60_v1.7_10yrs                                 27.26  15.6
-rolling_nm_scale0.9_nslice3_v1.7_10yrs                  27.25  14.5
-rolling_scale0.6_nslice2_v1.7_10yrs                     27.29  26.0
-twi_neo_pattern1_v1.7_10yrs                             27.50  82.7
-cadence_drive_gl30v1.7_10yrs                            27.29  22.5
-twi_neo_pattern4_v1.7_10yrs                             27.37  44.5
-twi_pairs_mixed_v1.7_10yrs                              27.29  23.1
-cadence_drive_gl200v1.7_10yrs                           27.29  24.9
-ddf_dither2.00_v1.7_10yrs                               26.80   1.2
-ddf_dither1.50_v1.7_10yrs                               26.96   2.3
-twi_neo_pattern6_v1.7_10yrs                             27.38  45.1
-rolling_scale0.8_nslice3_v1.7_10yrs                     27.27  17.3
-u_long_ms_40_v1.7_10yrs                                 27.31  30.1
-rolling_nm_scale1.0_nslice3_v1.7_10yrs                  27.30  29.5
-baseline_nexp2_v1.7_10yrs                               27.31  32.9
-rolling_scale0.2_nslice3_v1.7_10yrs                     27.27  17.9
-twi_neo_pattern3_v1.7_10yrs                             27.36  43.9
-rolling_scale0.4_nslice3_v1.7_10yrs                     27.30  27.2
-u_long_ms_30_v1.7_10yrs                                 27.33  40.5
-rolling_nm_scale0.8_nslice3_v1.7_10yrs                  27.30  27.7
-cadence_drive_gl100_gcbv1.7_10yrs                       27.28  21.4
-euclid_dither5_v1.7_10yrs                               27.31  35.3
-rolling_nm_scale0.2_nslice3_v1.7_10yrs                  27.27  18.5
-rolling_scale1.0_nslice3_v1.7_10yrs                     27.28  22.0
-rolling_nm_scale0.4_nslice3_v1.7_10yrs                  27.28  19.7
-footprint_0_v1.710yrs                                   27.22   9.2
-rolling_nm_scale0.2_nslice2_v1.7_10yrs                  27.32  39.3
-rolling_scale1.0_nslice2_v1.7_10yrs                     27.29  25.4
-cadence_drive_gl100v1.7_10yrs                           27.33  39.9
-euclid_dither1_v1.7_10yrs                               27.31  34.1
-footprint_1_v1.710yrs                                   27.22  11.0
-rolling_nm_scale0.4_nslice2_v1.7_10yrs                  27.29  23.7
-rolling_nm_scale0.8_nslice2_v1.7_10yrs                  27.32  37.0
-footprint_3_v1.710yrs                                   27.22   9.8
-footprint_2_v1.710yrs                                   27.27  16.8
-euclid_dither4_v1.7_10yrs                               27.28  20.8
-ddf_dither0.30_v1.7_10yrs                               27.51  86.1
-footprint_7_v1.710yrs                                   27.24  12.1
-rolling_nm_scale1.0_nslice2_v1.7_10yrs                  27.31  31.2
-rolling_scale0.2_nslice2_v1.7_10yrs                     27.31  32.4
-twi_neo_pattern2_v1.7_10yrs                             27.41  48.0
-rolling_scale0.4_nslice2_v1.7_10yrs                     27.31  31.8
-pair_times_55_v1.7_10yrs                                27.32  38.7
-footprint_6_v1.710yrs                                   27.19   6.4
-u_long_ms_50_v1.7_10yrs                                 27.34  42.2
-twi_neo_pattern7_v1.7_10yrs                             27.35  43.4
-rolling_scale0.8_nslice2_v1.7_10yrs                     27.31  30.6
-cadence_drive_gl30_gcbv1.7_10yrs                        27.28  20.2
-footprint_4_v1.710yrs                                   27.23  11.6
-pair_times_44_v1.7_10yrs                                27.32  36.4
-footprint_5_v1.710yrs                                   27.22  10.4
-twi_pairs_repeat_v1.7_10yrs                             27.27  16.2
-twi_neo_pattern5_v1.7_10yrs                             27.39  45.7
-twi_pairs_v1.7_10yrs                                    27.24  12.7
-cadence_drive_gl200_gcbv1.7_10yrs                       27.25  13.3
-pair_times_33_v1.7_10yrs                                27.30  28.3
-rolling_nm_scale0.9_nslice2_v1.7_10yrs                  27.30  28.9
-rolling_scale0.6_nslice3_v1.7_10yrs                     27.31  35.8
-baseline_nexp1_v1.7_10yrs                               27.53  91.3
-pair_times_22_v1.7_10yrs                                27.31  34.7
-pair_times_11_v1.7_10yrs                                27.25  13.9
-footprint_8_v1.710yrs                                   27.21   8.1
-ddf_dither0.10_v1.7_10yrs                               27.57  94.8
-rolling_nm_scale0.6_nslice3_v1.7_10yrs                  27.32  38.2
-rolling_scale0.9_nslice2_v1.7_10yrs                     27.29  26.6
-euclid_dither3_v1.7_10yrs                               27.32  37.6
+dcr_nham1_ugri_v1.5_10yrs                               27.46  63.6  107.43
+rolling_mod6_sdf_0.20_v1.5_10yrs                        27.50  85.5  107.43
+u60_v1.5_10yrs                                          27.60  97.1  107.43
+footprint_stuck_rollingv1.5_10yrs                       27.44  55.5  108.27
+daily_ddf_v1.5_10yrs                                    27.56  94.2  108.27
+alt_roll_mod2_dust_sdf_0.20_v1.5_10yrs                  27.42  49.7  107.43
+goodseeing_gz_v1.5_10yrs                                27.49  80.9  108.27
+footprint_standard_goalsv1.5_10yrs                      27.50  83.2  108.27
+footprint_big_sky_dustv1.5_10yrs                        27.47  73.4  106.59
+footprint_bluer_footprintv1.5_10yrs                     27.50  84.4  106.59
+twilight_neo_mod4_v1.5_10yrs                            27.53  90.2  107.43
+goodseeing_gi_v1.5_10yrs                                27.50  82.1  106.59
+dcr_nham2_ugr_v1.5_10yrs                                27.52  89.0  106.59
+short_exp_5ns_5expt_v1.5_10yrs                          27.62  97.7  108.27
+goodseeing_griz_v1.5_10yrs                              27.49  80.3  107.43
+twilight_neo_mod1_v1.5_10yrs                            27.67  98.3  106.59
+bulges_cadence_bulge_wfd_v1.5_10yrs                     27.48  74.6  105.75
+third_obs_pt120v1.5_10yrs                               27.47  70.5  106.59
+wfd_depth_scale0.95_v1.5_10yrs                          27.43  52.0  107.43
+footprint_no_gp_northv1.5_10yrs                         27.41  47.4  108.27
+footprint_big_skyv1.5_10yrs                             27.52  88.4  106.59
+footprint_newBv1.5_10yrs                                27.49  78.0  104.91
+baseline_2snaps_v1.5_10yrs                              27.20   6.9  107.43
+footprint_big_sky_nouiyv1.5_10yrs                       27.41  48.6  108.27
+twilight_neo_mod3_v1.5_10yrs                            27.53  90.8  108.27
+greedy_footprint_v1.5_10yrs                             27.45  58.4  107.43
+wfd_depth_scale0.90_v1.5_10yrs                          27.44  53.2  108.27
+dcr_nham1_ug_v1.5_10yrs                                 27.47  72.8  107.43
+rolling_mod2_sdf_0.10_v1.5_10yrs                        27.54  92.5  105.75
+footprint_newAv1.5_10yrs                                27.48  76.3  106.59
+rolling_mod3_sdf_0.10_v1.5_10yrs                        27.49  79.8  107.43
+var_expt_v1.5_10yrs                                     27.40  46.2  108.27
+bulges_i_heavy_v1.5_10yrs                               27.43  51.4  108.27
+wfd_depth_scale0.75_v1.5_10yrs                          27.48  75.7  105.75
+dcr_nham2_ug_v1.5_10yrs                                 27.45  59.5  107.43
+goodseeing_i_v1.5_10yrs                                 27.46  61.8  107.43
+short_exp_2ns_5expt_v1.5_10yrs                          27.45  61.3  107.43
+footprint_add_mag_cloudsv1.5_10yrs                      27.44  54.9  106.59
+agnddf_v1.5_10yrs                                       28.06  99.4  108.27
+wfd_depth_scale0.70_v1.5_10yrs                          27.46  68.2  106.59
+alt_dust_v1.5_10yrs                                     27.48  74.0  107.43
+baseline_v1.5_10yrs                                     27.47  71.1  106.59
+wfd_depth_scale0.65_v1.5_10yrs                          27.44  56.1  106.59
+descddf_v1.5_10yrs                                      27.03   2.9   89.80
+bulges_bs_v1.5_10yrs                                    27.44  53.8  107.43
+baseline_samefilt_v1.5_10yrs                            27.50  85.0  107.43
+short_exp_5ns_1expt_v1.5_10yrs                          27.53  91.9  107.43
+wfd_depth_scale0.85_v1.5_10yrs                          27.46  66.5  108.27
+dcr_nham2_ugri_v1.5_10yrs                               27.47  69.9  107.43
+third_obs_pt45v1.5_10yrs                                27.46  68.8  106.59
+wfd_depth_scale0.80_v1.5_10yrs                          27.50  83.8  105.75
+bulges_cadence_i_heavy_v1.5_10yrs                       27.43  52.6  107.43
+rolling_mod6_sdf_0.10_v1.5_10yrs                        27.51  86.7  106.59
+footprint_gp_smoothv1.5_10yrs                           27.47  69.4  107.43
+twilight_neo_mod2_v1.5_10yrs                            27.59  96.0  107.43
+third_obs_pt15v1.5_10yrs                                27.47  71.7  106.59
+bulges_bulge_wfd_v1.5_10yrs                             27.46  64.2  106.59
+goodseeing_gri_v1.5_10yrs                               27.49  76.9  105.75
+rolling_mod3_sdf_0.20_v1.5_10yrs                        27.49  77.5  107.43
+short_exp_2ns_1expt_v1.5_10yrs                          27.55  93.1  107.43
+spiders_v1.5_10yrs                                      27.46  67.1  107.43
+third_obs_pt90v1.5_10yrs                                27.45  57.8  107.43
+dcr_nham1_ugr_v1.5_10yrs                                27.45  60.1  107.43
+third_obs_pt60v1.5_10yrs                                27.51  87.3  106.59
+rolling_mod2_sdf_0.20_v1.5_10yrs                        27.51  87.9  107.43
+bulges_cadence_bs_v1.5_10yrs                            27.48  75.1  107.43
+third_obs_pt30v1.5_10yrs                                27.52  89.6  105.75
+wfd_depth_scale0.99_v1.5_10yrs                          27.46  62.4  104.91
+roll_mod2_dust_sdf_0.20_v1.5_10yrs                      27.45  59.0  107.43
+baseline_nexp2_scaleddown_v1.6_10yrs                    27.25  15.0  104.91
+rolling_fpo_3nslice0.8_v1.6_10yrs                       27.44  54.3  107.43
+rolling_fpo_2nslice0.8_v1.6_10yrs                       27.49  79.2  108.27
+combo_dust_v1.6_10yrs                                   27.49  78.6  105.75
+ss_heavy_v1.6_10yrs                                     27.56  93.6  107.43
+rolling_fpo_6nslice0.9_v1.6_10yrs                       27.42  50.3  107.43
+baseline_nexp1_v1.6_10yrs                               27.46  63.0  107.43
+even_filters_g_v1.6_10yrs                               27.41  46.8  107.43
+rolling_fpo_2nslice1.0_v1.6_10yrs                       27.44  56.6  106.59
+rolling_fpo_3nslice1.0_v1.6_10yrs                       27.45  60.7  107.43
+ddf_heavy_v1.6_10yrs                                    28.10 100.0  109.11
+even_filters_altv1.6_10yrs                              27.46  67.6  109.11
+rolling_exgal_mod2_dust_sdf_0.80_v1.6_10yrs             27.49  81.5  106.59
+combo_dust_nexp2_v1.6_10yrs                             27.21   8.7  106.59
+dm_heavy_v1.6_10yrs                                     27.09   4.0  182.13
+even_filtersv1.6_10yrs                                  27.46  64.7  106.59
+mw_heavy_v1.6_10yrs                                     27.46  65.9  106.59
+rolling_fpo_6nslice1.0_v1.6_10yrs                       27.47  72.3  107.43
+baseline_nexp2_v1.6_10yrs                               27.17   5.8  107.43
+dm_heavy_nexp2_v1.6_10yrs                               26.86   1.7  181.29
+rolling_fpo_6nslice0.8_v1.6_10yrs                       27.42  50.9  108.27
+rolling_fpo_2nslice0.9_v1.6_10yrs                       27.44  57.2  107.43
+mw_heavy_nexp2_v1.6_10yrs                               27.21   7.5  106.59
+ss_heavy_nexp2_v1.6_10yrs                               27.28  19.1  107.43
+rolling_fpo_3nslice0.9_v1.6_10yrs                       27.41  49.1  107.43
+ddf_heavy_nexp2_v1.6_10yrs                              27.91  98.8  109.11
+rolling_exgal_mod2_dust_sdf_0.80_nexp2_v1.6_10yrs       27.17   5.2  107.43
+barebones_nexp2_v1.6_10yrs                              26.79   0.6  107.43
+barebones_v1.6_10yrs                                    27.09   4.6  107.43
+even_filters_alt_g_v1.6_10yrs                           27.46  65.3  106.59
+rolling_nm_scale0.6_nslice2_v1.7_10yrs                  27.33  41.0   99.04
+ddf_dither0.70_v1.7_10yrs                               27.31  33.5   98.20
+rolling_scale0.9_nslice3_v1.7_10yrs                     27.33  41.6   98.20
+ddf_dither1.00_v1.7_10yrs                               27.06   3.5  119.18
+ddf_dither0.05_v1.7_10yrs                               27.60  96.5   65.46
+euclid_dither2_v1.7_10yrs                               27.35  42.8   97.36
+ddf_dither0.00_v1.7_10yrs                               27.59  95.4   62.11
+twi_pairs_mixed_repeat_v1.7_10yrs                       27.29  24.3   99.88
+u_long_ms_60_v1.7_10yrs                                 27.26  15.6  100.72
+rolling_nm_scale0.9_nslice3_v1.7_10yrs                  27.25  14.5  101.55
+rolling_scale0.6_nslice2_v1.7_10yrs                     27.29  26.0  101.55
+twi_neo_pattern1_v1.7_10yrs                             27.50  82.7   99.04
+cadence_drive_gl30v1.7_10yrs                            27.29  22.5   99.88
+twi_neo_pattern4_v1.7_10yrs                             27.37  44.5  101.55
+twi_pairs_mixed_v1.7_10yrs                              27.29  23.1  100.72
+cadence_drive_gl200v1.7_10yrs                           27.29  24.9  102.39
+ddf_dither2.00_v1.7_10yrs                               26.80   1.2  188.84
+ddf_dither1.50_v1.7_10yrs                               26.96   2.3  150.23
+twi_neo_pattern6_v1.7_10yrs                             27.38  45.1   99.88
+rolling_scale0.8_nslice3_v1.7_10yrs                     27.27  17.3   98.20
+u_long_ms_40_v1.7_10yrs                                 27.31  30.1   99.88
+rolling_nm_scale1.0_nslice3_v1.7_10yrs                  27.30  29.5   98.20
+baseline_nexp2_v1.7_10yrs                               27.31  32.9   98.20
+rolling_scale0.2_nslice3_v1.7_10yrs                     27.27  17.9   99.04
+twi_neo_pattern3_v1.7_10yrs                             27.36  43.9   99.04
+rolling_scale0.4_nslice3_v1.7_10yrs                     27.30  27.2   98.20
+u_long_ms_30_v1.7_10yrs                                 27.33  40.5   97.36
+rolling_nm_scale0.8_nslice3_v1.7_10yrs                  27.30  27.7   99.88
+cadence_drive_gl100_gcbv1.7_10yrs                       27.28  21.4   99.04
+euclid_dither5_v1.7_10yrs                               27.31  35.3   99.88
+rolling_nm_scale0.2_nslice3_v1.7_10yrs                  27.27  18.5  100.72
+rolling_scale1.0_nslice3_v1.7_10yrs                     27.28  22.0   99.88
+rolling_nm_scale0.4_nslice3_v1.7_10yrs                  27.28  19.7   99.04
+footprint_0_v1.710yrs                                   27.22   9.2  108.27
+rolling_nm_scale0.2_nslice2_v1.7_10yrs                  27.32  39.3   99.04
+rolling_scale1.0_nslice2_v1.7_10yrs                     27.29  25.4  100.72
+cadence_drive_gl100v1.7_10yrs                           27.33  39.9   99.04
+euclid_dither1_v1.7_10yrs                               27.31  34.1   98.20
+footprint_1_v1.710yrs                                   27.22  11.0  107.43
+rolling_nm_scale0.4_nslice2_v1.7_10yrs                  27.29  23.7  100.72
+rolling_nm_scale0.8_nslice2_v1.7_10yrs                  27.32  37.0   99.04
+footprint_3_v1.710yrs                                   27.22   9.8  107.43
+footprint_2_v1.710yrs                                   27.27  16.8  107.43
+euclid_dither4_v1.7_10yrs                               27.28  20.8  101.55
+ddf_dither0.30_v1.7_10yrs                               27.51  86.1   78.89
+footprint_7_v1.710yrs                                   27.24  12.1  106.59
+rolling_nm_scale1.0_nslice2_v1.7_10yrs                  27.31  31.2   99.04
+rolling_scale0.2_nslice2_v1.7_10yrs                     27.31  32.4   97.36
+twi_neo_pattern2_v1.7_10yrs                             27.41  48.0   99.88
+rolling_scale0.4_nslice2_v1.7_10yrs                     27.31  31.8   99.88
+pair_times_55_v1.7_10yrs                                27.32  38.7   99.88
+footprint_6_v1.710yrs                                   27.19   6.4  106.59
+u_long_ms_50_v1.7_10yrs                                 27.34  42.2   98.20
+twi_neo_pattern7_v1.7_10yrs                             27.35  43.4   99.88
+rolling_scale0.8_nslice2_v1.7_10yrs                     27.31  30.6   99.88
+cadence_drive_gl30_gcbv1.7_10yrs                        27.28  20.2   99.88
+footprint_4_v1.710yrs                                   27.23  11.6  106.59
+pair_times_44_v1.7_10yrs                                27.32  36.4   99.04
+footprint_5_v1.710yrs                                   27.22  10.4  107.43
+twi_pairs_repeat_v1.7_10yrs                             27.27  16.2   99.04
+twi_neo_pattern5_v1.7_10yrs                             27.39  45.7  100.72
+twi_pairs_v1.7_10yrs                                    27.24  12.7  100.72
+cadence_drive_gl200_gcbv1.7_10yrs                       27.25  13.3  102.39
+pair_times_33_v1.7_10yrs                                27.30  28.3  100.72
+rolling_nm_scale0.9_nslice2_v1.7_10yrs                  27.30  28.9   99.88
+rolling_scale0.6_nslice3_v1.7_10yrs                     27.31  35.8  100.72
+baseline_nexp1_v1.7_10yrs                               27.53  91.3   99.88
+pair_times_22_v1.7_10yrs                                27.31  34.7   98.20
+pair_times_11_v1.7_10yrs                                27.25  13.9  100.72
+footprint_8_v1.710yrs                                   27.21   8.1  107.43
+ddf_dither0.10_v1.7_10yrs                               27.57  94.8   67.14
+rolling_nm_scale0.6_nslice3_v1.7_10yrs                  27.32  38.2   98.20
+rolling_scale0.9_nslice2_v1.7_10yrs                     27.29  26.6  100.72
+euclid_dither3_v1.7_10yrs                               27.32  37.6   98.20
