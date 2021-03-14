@@ -58,7 +58,7 @@ class NqsoMetric(BaseMetric):
         dS = dataSlice[dataSlice[self.filterCol] == self.lsstFilter]
         if dS.shape[0]==0:
             return self.badval
-        mlim5 = EM5.run(dS, slicePoint)
+        mlim5 = self.EM5.run(dS, slicePoint)
         if self.m_bright > mlim5:
             return 0
 
