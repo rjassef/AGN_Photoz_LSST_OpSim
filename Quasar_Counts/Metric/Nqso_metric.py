@@ -11,6 +11,8 @@ import sys
 sys.path.append(root_path+"/Quasar_Counts/")
 from Fast_Nqso import Fast_Nqso
 
+__all__ = ['NqsoMetric']
+
 class NqsoMetric(BaseMetric):
 
     """
