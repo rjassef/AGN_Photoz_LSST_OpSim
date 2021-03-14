@@ -43,14 +43,15 @@ for k,filter in enumerate(filters):
 #Set up folders.
 your_username = "rjassef"
 folder_mafoutput = "Nqso_EM5_{0:d}".format(NSIDE)
-outDir = '/home/idies/workspace/Storage/{0}/persistent/MAFOutput/{1}'.format(your_username,folder_mafoutput)
+#outDir = '/home/idies/workspace/Storage/{0}/persistent/MAFOutput/{1}'.format(your_username,folder_mafoutput)
+outDir = '/home/idies/workspace/Temporary/{0}/scratch/MAFOutput/{1}'.format(your_username,folder_mafoutput)
 if not os.path.exists(os.path.abspath(outDir)):
     os.mkdir(os.path.abspath(outDir))
 
-resultDbPath  = '/home/idies/workspace/Storage/{0}/persistent/MAFOutput/{1}'.format(
-    your_username, folder_mafoutput)
-metricDataPath = '/home/idies/workspace/Storage/{0}/persistent/MAFOutput/{1}/MetricData/'.format(
-    your_username, folder_mafoutput)
+#resultDbPath  = '/home/idies/workspace/Storage/{0}/persistent/MAFOutput/{1}'.format(your_username, folder_mafoutput)
+resultDbPath  = '/home/idies/workspace/Temporary/{0}/scratch/MAFOutput/{1}'.format(your_username, folder_mafoutput)
+#metricDataPath = '/home/idies/workspace/Storage/{0}/persistent/MAFOutput/{1}/MetricData/'.format(your_username, folder_mafoutput)
+metricDataPath = '/home/idies/workspace/Temporary/{0}/scratch/MAFOutput/{1}/MetricData/'.format(your_username, folder_mafoutput)
 
 #Find the list of completed runs.
 n_metrics = len(Nqso_EM5)
