@@ -121,7 +121,7 @@ zmax = 7.0
 #dlogz = 0.01
 #zs = 10.**(np.arange(np.log10(1+zmin), np.log10(1+zmax), dlogz)) - 1
 dz = 0.01
-zs = np.arange(zmin, zmax, dz)
+zs = np.arange(zmin, zmax+0.1*dz, dz)
 
 #For each redshift bin, calculate the apparent magnitude of an L* quasar in a each LSST band.
 mstar = np.zeros((len(zs),len(filters)))

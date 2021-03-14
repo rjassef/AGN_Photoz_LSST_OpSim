@@ -97,10 +97,19 @@ jyzero = np.loadtxt("bandmag.dat",usecols=[2])
 filters = np.genfromtxt("bandmag.dat",usecols=[0],dtype='U')
 
 #Get m* for a range in z and all LSST bands.
+#zmin = 0.01
+#zmax = 6.0
+#dlogz = 0.01
+#zs = 10.**(np.arange(np.log10(1+zmin), np.log10(1+zmax), dlogz)) - 1
+
 zmin = 0.01
-zmax = 6.0
-dlogz = 0.01
-zs = 10.**(np.arange(np.log10(1+zmin), np.log10(1+zmax), dlogz)) - 1
+zmax = 7.0
+#dlogz = 0.01
+#zs = 10.**(np.arange(np.log10(1+zmin), np.log10(1+zmax), dlogz)) - 1
+dz = 0.01
+zs = np.arange(zmin, zmax+0.1*dz, dz)
+
+
 mstar = np.zeros((len(zs),len(filters)))
 Lnu1450_unnorm = None
 for k,z in enumerate(zs):
