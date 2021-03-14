@@ -351,6 +351,7 @@ class QLF(object):
             lam1 = lam_B
             lam2 = lam_SX
         sigma = s1 + (s2-s1)*np.log10((lam1/lam).to(1.).value) / np.log10((lam1/lam2).to(1.).value)
+        sigma = np.where(sigma<0.010, 0.010, sigma)
         return sigma
 
 
