@@ -5,7 +5,7 @@ from lsst.sims.maf.metrics import BaseMetric
 
 import os
 import re
-root_path = re.search("(.*/AGN_Photoz_LSST_OpSim)/*",os.getcwd()).group(1)
+root_path = re.search("(.*/AGN_Photoz_LSST_OpSim)/*",os.path.realpath(__file__)).group(1)
 
 import sys
 sys.path.append(root_path+"/Quasar_Counts/")

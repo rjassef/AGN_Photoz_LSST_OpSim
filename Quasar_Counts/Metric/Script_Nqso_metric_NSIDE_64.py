@@ -58,49 +58,51 @@ n_metrics = len(Nqso_EM5)
 completed_runs = find_completed_runs(n_metrics, resultDbPath, metricDataPath)
 
 #Run for FBS 1.5
-FBS_version = "1.5"
-dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
+#FBS_version = "1.5"
+for FBS_version in ["1.5", "1.6", "1.7"]:
 
-opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
+    dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
 
-dbRuns = show_opsims(dbDir)
-for run in dbRuns:
-    if run in completed_runs:
-        continue
-    for k in range(len(filters)-1):
-        Color_EM5[k].setRunName(run)
-    metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
-                    opSimDbs[run], metricDataPath, resultDbs[run])
-    metricGroup.runAll()
+    opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
+
+    dbRuns = show_opsims(dbDir)
+    for run in dbRuns:
+        if run in completed_runs:
+            continue
+        for k in range(len(filters)):
+            Nqso_EM5[k].setRunName(run)
+        metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
+                        opSimDbs[run], metricDataPath, resultDbs[run])
+        metricGroup.runAll()
 
 #Repeat for FBS 1.6
-FBS_version = "1.6"
-dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
+# FBS_version = "1.6"
+# dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
 
-opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
+# opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
 
-dbRuns = show_opsims(dbDir)
-for run in dbRuns:
-    if run in completed_runs:
-        continue
-    for k in range(len(filters)-1):
-        Color_EM5[k].setRunName(run)
-    metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
-                    opSimDbs[run], metricDataPath, resultDbs[run])
-    metricGroup.runAll()
+# dbRuns = show_opsims(dbDir)
+# for run in dbRuns:
+#     if run in completed_runs:
+#         continue
+#     for k in range(len(filters)):
+#         Nqso_EM5[k].setRunName(run)
+#     metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
+#                     opSimDbs[run], metricDataPath, resultDbs[run])
+#     metricGroup.runAll()
 
-#Repeat for FBS 1.7
-FBS_version = "1.7"
-dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
+# #Repeat for FBS 1.7
+# FBS_version = "1.7"
+# dbDir = '/home/idies/workspace/lsst_cadence/FBS_{}/'.format(FBS_version)
 
-opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
+# opSimDbs, resultDbs = connect_dbs(dbDir, outDir)
 
-dbRuns = show_opsims(dbDir)
-for run in dbRuns:
-    if run in completed_runs:
-        continue
-    for k in range(len(filters)-1):
-        Color_EM5[k].setRunName(run)
-    metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
-                    opSimDbs[run], metricDataPath, resultDbs[run])
-    metricGroup.runAll()
+# dbRuns = show_opsims(dbDir)
+# for run in dbRuns:
+#     if run in completed_runs:
+#         continue
+#     for k in range(len(filters)):
+#         Nqso_EM5[k].setRunName(run)
+#     metricGroup = metricBundles.MetricBundleGroup(bundleDict,\
+#                     opSimDbs[run], metricDataPath, resultDbs[run])
+#     metricGroup.runAll()

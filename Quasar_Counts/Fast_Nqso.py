@@ -4,7 +4,7 @@ import astropy.units as u
 
 import os
 import re
-root_path = re.search("(.*/AGN_Photoz_LSST_OpSim)/*",os.getcwd()).group(1)
+root_path = re.search("(.*/AGN_Photoz_LSST_OpSim)/*",os.path.realpath(__file__)).group(1)
 
 class Fast_Nqso(object):
 
