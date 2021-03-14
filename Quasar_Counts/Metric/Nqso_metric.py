@@ -1,4 +1,5 @@
 import numpy as np
+import astropy.units as u
 import lsst.sims.maf.metrics as metrics
 from lsst.sims.maf.metrics import BaseMetric
 
