@@ -87,7 +87,7 @@ cato.write("\n")
 
 for i in range(len(m[:-1])):
     for k in range(len(z[:-1])):
-        cato.write("{0:12.2f}".format(Output[i,k]))
+        cato.write("{0:15.3e}".format(Output[i,k]))
     cato.write("\n")
 
 cato.close()
