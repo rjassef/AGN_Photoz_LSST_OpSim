@@ -96,7 +96,8 @@ def get_phi_lam_obs(z, qlf, lLfrac_lam_obs_min, lLfrac_lam_obs_max, lam_eff_filt
 
     #Apply the limit in requested.
     if lLfrac_min_lim is not None:
-        phi_bol[lLfrac<=lLfrac_min_lim] = 0.
+        #phi_bol[lLfrac<=lLfrac_min_lim] = 0.
+        phi_bol[lLfrac<=lLfrac_min_lim] = 1.e-32*phi_bol.unit
 
     #Transform the bolometric QLF to the intrinsic luminosity QLF in the band. We assume that the bolometric correction in all bands of interest is proportional to the one in the B-band, as is done in the Hopkins07 provided code.
     phi_lam = phi_bol*jacobian(Lfrac, Lstar_10, qlf)
@@ -139,7 +140,7 @@ def get_phi_lam_obs(z, qlf, lLfrac_lam_obs_min, lLfrac_lam_obs_max, lam_eff_filt
     f_NH = qlf.fNH(log_NH_2D, lLfrac_eval_2D, Lstar_10, z)
 
     #Extrapolate phi_lam_sig so that we can evaluate it in the new positions.
-    log_phi_lam_sig_interp = interp1d(lLfrac_lam_sig, np.log10(phi_lam_sig.value), kind='linear', fill_value = 'extrapolate')
+    log_phi_lam_sig_interp = interp1d(lLfrac_lam_sig, np.log10(phi_lam_sig.value+1e-32), kind='linear', fill_value = 'extrapolate')
 
     #Evaluate it an produce phi_lam_obs_grid by integrating over f_NH dlNH.
     phi_lam_sig_eval_2D = 10.**(log_phi_lam_sig_interp(lLfrac_lam_sig_eval_2D))
