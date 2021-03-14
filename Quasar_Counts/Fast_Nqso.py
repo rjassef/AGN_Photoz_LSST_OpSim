@@ -16,7 +16,8 @@ class Fast_Nqso(object):
         self.qlf_model   = qlf_model
         self.SED_model   = SED_model
         self.area        = area
-        self.area_factor = (area/(4.*np.pi*u.sr)).to(1.).value
+        #self.area_factor = (area/(4.*np.pi*u.sr)).to(1.).value
+        self.area_factor = area.to(u.deg**2).value
 
         #Start by reading the long table. These are numbers for the entire sky.
         cat = open(root_path + "/Quasar_Counts/General/Long_Table.{0}.{1}.{2}.{3}.txt".format(self.band, self.qlf_module, self.qlf_model, self.SED_model))
