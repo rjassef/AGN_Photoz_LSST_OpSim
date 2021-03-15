@@ -14,8 +14,10 @@ header["/uband_depth/Table_ug_band_depth.txt"] = [
     "run",
     "u_depth_3sig",
     "u_depth_3sig_rank",
+    "u_depth_3sig_area",
     "g_depth_5sig",
-    "g_depth_5sig_rank"
+    "g_depth_5sig_rank",
+    "g_depth_5sig_area"
 ]
 
 #Next, add the DDFs runs.
@@ -28,40 +30,28 @@ for DDF in DDFs:
         header["/DDFs_uband_depth/Table_DDF_{0}_band_depth.{1}.txt".format(filter, DDF)] = [
             "run",
             "{0}_{1}_depth_{2}sig".format(DDF,filter,sig),
-            "{0}_{1}_depth_{2}sig_rank".format(DDF,filter,sig)
+            "{0}_{1}_depth_{2}sig_rank".format(DDF,filter,sig),
+            "{0}_{1}_depth_{2}sig_area".format(DDF,filter,sig)
         ]
 
 
 #Next, add the color excess runs.
+filters = ["u","g","r","i","z","y"]
 for z in ["1.0","2.0","3.0"]:
-    header["/color_excess/Table_color_excess_z{}.txt".format(z)] = [
-        "run",
-        "cex_ug_{}".format(z),
-        "cex_ug_{}_rank".format(z),
-        "cex_gr_{}".format(z),
-        "cex_gr_{}_rank".format(z),
-        "cex_ri_{}".format(z),
-        "cex_ri_{}_rank".format(z),
-        "cex_iz_{}".format(z),
-        "cex_iz_{}_rank".format(z),
-        "cex_zy_{}".format(z),
-        "cex_zy_{}_rank".format(z)
-    ]
+    tname = "/color_excess/Table_color_excess_z{}.txt".format(z)
+    header[tname] = ["run"]
+    for k in range(len(filters[:-1])):
+        header[tname].append("cex_{0:s}{1:s}_{2}".format(filters[k], filters[k+1], z))
+        header[tname].append("cex_{0:s}{1:s}_{2}_rank".format(filters[k], filters[k+1], z))
+        header[tname].append("cex_{0:s}{1:s}_{2}_area".format(filters[k], filters[k+1], z))
 
 #Finally, add the mean nights runs.
-header["/mean_time_between_obs/Table_mean_nights_between_bands.txt"] = [
-    "run",
-    "nights_ug",
-    "nights_ug_rank",
-    "nights_gr",
-    "nights_gr_rank",
-    "nights_ri",
-    "nights_ri_rank",
-    "nights_iz",
-    "nights_iz_rank",
-    "nights_zy",
-    "nights_zy_rank"
-]
+tname = "/mean_time_between_obs/Table_mean_nights_between_bands.txt"
+header[tname] = ["run"]
+for k in range(len(filters[:-1])):
+    header[tname].append("nights_{0}{1}".format(filters[k],filters[k+1]))
+    header[tname].append("nights_{0}{1}_rank".format(filters[k],filters[k+1]))
+    header[tname].append("nights_{0}{1}_area".format(filters[k],filters[k+1]))
 
 #Use the first medians table to create the master output table. This table should contain all the runs that other tables contain.
 tables = list(header.keys())
