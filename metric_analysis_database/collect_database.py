@@ -45,13 +45,22 @@ for z in ["1.0","2.0","3.0"]:
         header[tname].append("cex_{0:s}{1:s}_{2}_rank".format(filters[k], filters[k+1], z))
         header[tname].append("cex_{0:s}{1:s}_{2}_area".format(filters[k], filters[k+1], z))
 
-#Finally, add the mean nights runs.
+#Add the mean nights runs.
 tname = "/mean_time_between_obs/Table_mean_nights_between_bands.txt"
 header[tname] = ["run"]
 for k in range(len(filters[:-1])):
     header[tname].append("nights_{0}{1}".format(filters[k],filters[k+1]))
     header[tname].append("nights_{0}{1}_rank".format(filters[k],filters[k+1]))
     header[tname].append("nights_{0}{1}_area".format(filters[k],filters[k+1]))
+
+#Finally add the number of QSOs detected.
+tname = "/Quasar_Counts/Metric/Table_Nqso_i.txt"
+header[tname] = [
+    "run",
+    "Nqso_i",
+    "Nqso_i_rank",
+    "Nqso_i_area"
+]
 
 #Use the first medians table to create the master output table. This table should contain all the runs that other tables contain.
 tables = list(header.keys())
