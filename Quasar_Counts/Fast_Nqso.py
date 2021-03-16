@@ -43,9 +43,9 @@ class Fast_Nqso(object):
         Function that returns the number of quasars in a redshift and magnitude range for a given area.
         """
 
-        N11 = self.Nqso_cumulative(zmin, m_bright)[0]
-        N12 = self.Nqso_cumulative(zmin, m_faint )[0]
-        N21 = self.Nqso_cumulative(zmax, m_bright)[0]
-        N22 = self.Nqso_cumulative(zmax, m_faint )[0]
+        N11 = self.Nqso_cumulative(zmin, m_bright)
+        N12 = self.Nqso_cumulative(zmin, m_faint )
+        N21 = self.Nqso_cumulative(zmax, m_bright)
+        N22 = self.Nqso_cumulative(zmax, m_faint )
 
         return (N22 - N21 - N12 + N11)*self.area_factor

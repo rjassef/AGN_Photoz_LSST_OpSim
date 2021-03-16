@@ -63,4 +63,4 @@ class NqsoMetric(BaseMetric):
             return 0
 
         #Get the number of quasars detected to that depth per unit magnitude.
-        return self.qso_counter.Nqso(self.zmin, self.zmax, self.m_bright, mlim5)
+        return self.qso_counter.Nqso(self.zmin, self.zmax, self.m_bright, mlim5)[0]
