@@ -45,13 +45,13 @@ for i in range(len(mi[:-1])):
     cato.write("{0:7d}".format(int(mi[i+1])))
     for k in range(len(z[:-1])):
         print(z[k], z[k+1])
-        Nq = qso_counter.Nqso(z[k], z[k+1], mi[i], mi[i+1])
+        Nq = qso_counter.Nqso(z[k], z[k+1], mi[i], mi[i+1])[0]
         cato.write("{0:12.0f}".format(Nq))
-    cato.write("{0:12.0f}\n".format(qso_counter.Nqso(z[0], z[-1], mi[i], mi[i+1])))
+    cato.write("{0:12.0f}\n".format(qso_counter.Nqso(z[0], z[-1], mi[i], mi[i+1])[0]))
 
 cato.write("{0:7s}".format("Total"))
 for k in range(len(z[:-1])):
-    cato.write("{0:12.0f}".format(qso_counter.Nqso(z[k], z[k+1], mi[0], mi[-1])))
-cato.write("{0:12.0f}\n".format(qso_counter.Nqso(z[0], z[-1], mi[0], mi[-1])))
+    cato.write("{0:12.0f}".format(qso_counter.Nqso(z[k], z[k+1], mi[0], mi[-1])[0]))
+cato.write("{0:12.0f}\n".format(qso_counter.Nqso(z[0], z[-1], mi[0], mi[-1])[0]))
 
 cato.close()
