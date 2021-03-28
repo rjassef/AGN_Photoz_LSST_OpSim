@@ -133,7 +133,7 @@ def plot_OpSims_hist(Key, bundleDicts_input, order_func=get_metric_medians, data
     
 ####
 
-def get_data(bundleDicts, run, Key, data_func, datamin, datamax):
+def get_data(bundleDicts, run, Key, data_func=None, datamin=None, datamax=None):
     
     # need to mask the pixels that have no available data
     mask = bundleDicts[run][Key].metricValues.mask
@@ -153,7 +153,8 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
                               color_map_bottom=mpl.cm.cool_r, xlabel=None, 
                               healpix_pixarea=6.391586616190171e-05*u.sr, 
                               figsize=(10, 15), dpi=200, FBS=None, datamin=None, 
-                              datamax=None, title=None, bins=60, percentile=10):
+                              datamax=None, title=None, bins=60, ymin_use=None, ymax_use=None, 
+                              percentile=10):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -203,34 +204,60 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
         mds_aux = unsort_mds[order]-mds_offset
         if  mds_aux>mds_lims[1] and mds_aux<mds_lims[2]:
             c = mcd.XKCD_COLORS["xkcd:light grey"].upper()
-            label = None
         else:
             continue
-        _ = ax.hist(data, bins=bins, histtype='step', color=c, density=density, label=label)
+        _ = ax.hist(data, bins=bins, histtype='step', color=c, density=density, label=None)
 
-    #Now draw the top and bottom percentiles.
-    for k, order in enumerate(sort_order):  
+    #Now draw the bottom percentile. Do it backwards so that the bottom run is drawn last.
+    for k, order in enumerate(sort_order[::-1]):
         run = runs[order]
         data = get_data(bundleDicts,run,Key,data_func,datamin,datamax)
         mds_aux = unsort_mds[order]-mds_offset
         if mds_aux <= mds_lims[1]:
             c = color_map_bottom(Norm[0](unsort_mds[order]-mds_offset))
-            label = run
-        elif mds_aux >= mds_lims[2]: 
-            c = color_map_top(Norm[1](unsort_mds[order]-mds_offset))
-            label = run
         else:
             continue
-        _ = ax.hist(data, bins=bins, histtype='step', color=c, density=density, label=label)
-
+        _ = ax.hist(data, bins=bins, histtype='step', color=c, density=density, label=run)
         
+        
+    #Finally, draw the top percentile.
+    for k, order in enumerate(sort_order):  
+        run = runs[order]
+        data = get_data(bundleDicts,run,Key,data_func,datamin,datamax)
+        mds_aux = unsort_mds[order]-mds_offset
+        if mds_aux >= mds_lims[2]: 
+            c = color_map_top(Norm[1](unsort_mds[order]-mds_offset))
+        else:
+            continue
+        _ = ax.hist(data, bins=bins, histtype='step', color=c, density=density, label=run)
+
+    #Get all the legends and then sort them. 
+    handles_raw, labels_raw = ax.get_legend_handles_labels()
+    labels_raw = np.array(labels_raw)
+    handles = list()
+    labels = list()
+    for order in sort_order:
+        run = runs[order]
+        if run in labels_raw:
+            k = np.argwhere(labels_raw==run)[0][0]
+            labels.append(labels_raw[k])
+            handles.append(handles_raw[k])
+    
     # label & legend
     ax.set_xlabel(xlabel, fontsize=12)
     ncol_legend = 1
     #ncol_legend = 1 + int(len(mds[])/60.)
-    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.0), edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
+    ax.legend(handles, labels, fontsize=7.5, bbox_to_anchor=(1.0, 1.0), 
+              edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
     
-    #ax.yaxis.set_major_locator(plt.FixedLocator(np.array([500, 1000, 1500, 2000])/(healpix_pixarea/60)**2))
+    #Set the y-limit range and then the y ticks. 
+    ymin, ymax = ax.get_ylim()
+    if ymin_use is not None:
+        ymin = ymin_use/healpix_pixarea.to(u.deg**2).value
+    if ymax_use is not None:
+        ymax = ymax_use/healpix_pixarea.to(u.deg**2).value
+    ax.set_ylim([ymin, ymax])
+    
     y_vals = ax.get_yticks()
     ax.set_yticklabels(['{:.0f}'.format(x * healpix_pixarea.to(u.deg**2).value) for x in y_vals], rotation=90)
     ax.set_ylabel('Area ($\mathrm{degree^{2}}$)', labelpad=7)
@@ -247,6 +274,102 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
     if title is not None:
         ax.set_title(title)
     
+####
+
+def plot_OpSims_color_excess_redshift_extremes(Key, bundleDicts_input, zs, quasar_colors, 
+                                               order_func=get_metric_medians, 
+                                               color_map_top=mpl.cm.summer_r,
+                                               color_map_bottom=mpl.cm.cool_r,
+                                               ylabel=None, figsize=(10, 15), dpi=200, 
+                                               FBS=None, datamin=None, datamax=None,
+                                               percentile=10):
+    
+    #First, select the runs to use by FBS version if requested.
+    if FBS is None:
+        bundleDicts = bundleDicts_input
+    else:
+        bundleDicts = dict()
+        all_runs = list(bundleDicts_input.keys())
+        for run in all_runs:
+            if not re.search(FBS,run):
+                continue
+            bundleDicts[run] = bundleDicts_input[run]
+    
+    # get plotting order
+    unsort_mds = order_func(Key, bundleDicts)
+    runs = list(bundleDicts.keys())
+    sort_order = np.argsort(unsort_mds)
+    mds = np.sort(unsort_mds)
+    mds_offset = mds[0] - 1e-3*(mds[-1]-mds[0])
+    mds -= mds_offset
+
+    #Print the names of the extreme metrics according to the sorting function. 
+    print(runs[sort_order[ 0]], unsort_mds[sort_order[ 0]])
+    print(runs[sort_order[-1]], unsort_mds[sort_order[-1]])
+    
+    
+    #Create normalization objects. We use the top and bottom percentile requested.
+    pcs = [0.0, percentile, 100.-percentile, 100.]
+    mds_lims = np.percentile(mds,pcs)
+    Norm = [None]*2
+    #Norm[0] = mpl.colors.LogNorm(vmin=mds_lims[0], vmax=mds_lims[1])
+    #Norm[1] = mpl.colors.LogNorm(vmin=mds_lims[2], vmax=mds_lims[3])
+    Norm[0] = mpl.colors.Normalize(vmin=mds_lims[0], vmax=mds_lims[1])
+    Norm[1] = mpl.colors.Normalize(vmin=mds_lims[2], vmax=mds_lims[3])
+
+    # other plot setting
+    density = False
+
+    fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
+
+    #First, plot all the grey ones.
+    for k, order in enumerate(sort_order):  
+        run = runs[order]
+        data = get_data(bundleDicts, run, Key)
+        mds_aux = unsort_mds[order]-mds_offset
+        if mds_aux > mds_lims[1] and mds_aux < mds_lims[2]:
+            c = mcd.XKCD_COLORS["xkcd:light grey"].upper()
+        else:
+            continue
+        color_cond = (~np.isnan(quasar_colors)) & (~np.isinf(quasar_colors))
+        color_excess_z = unsort_mds[order] - quasar_colors[color_cond]
+        zs_use = zs[color_cond]
+        ax.plot(zs_use, color_excess_z, color=c, label=None)
+
+    #Now, plot the ones in the top and bottom percentiles.
+    for k, order in enumerate(sort_order):  
+        run = runs[order]
+        data = get_data(bundleDicts, run, Key)
+        mds_aux = unsort_mds[order]-mds_offset
+        if mds_aux <= mds_lims[1]:
+            c = color_map_bottom(Norm[0](mds_aux))
+        elif mds_aux >= mds_lims[2]: 
+            c = color_map_top(Norm[1](mds_aux))
+        else:
+            continue
+        color_cond = (~np.isnan(quasar_colors)) & (~np.isinf(quasar_colors))
+        color_excess_z = unsort_mds[order] - quasar_colors[color_cond]
+        zs_use = zs[color_cond]
+        ax.plot(zs_use, color_excess_z, color=c, label=run)
+
+        
+    # label & legend
+    ax.set_xlabel("Redshift", fontsize=12)
+    ncol_legend = 1
+    ax.legend(fontsize=7.5, bbox_to_anchor=(1.0, 1.0), edgecolor='k', 
+              loc=2, labelspacing=0.45, ncol=ncol_legend)
+    ax.set_ylabel(ylabel, fontsize=12, labelpad=7)
+        
+    #Set the xlabel range.
+    xmin, xmax = ax.get_xlim()
+    if datamin is not None:
+        xmin = datamin
+    if datamax is not None:
+        xmax = datamax
+    ax.set_xlim([xmin,xmax])
+    
+    return
+
 ####
 
 def plot_OpSims_color_excess_redshift(Key, bundleDicts_input, zs, quasar_colors, order_func=get_metric_medians, 
@@ -376,3 +499,31 @@ def plot_OpSims_Nqso_hist(Key, bundleDicts_input, xlabel=None, figsize=(10, 15),
     #Add the title if provided.
     if title is not None:
         ax.set_title(title)
+
+###
+
+def plot_OpSims_Nqso_hist_v2(Key, Nqso, xlabel=None, figsize=(5, 10), dpi=200,
+                             datamin=None, datamax=None, bins=60, title=None):
+      
+    #Make a histogram of Nqso. 
+    density = False
+    fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
+    
+    _ = ax.hist(Nqso[Key], bins=bins, histtype='step', density=density)
+    
+    ax.set_xlabel(xlabel, fontsize=12)
+    ax.set_ylabel(r'Number of OpSim Runs', labelpad=7)
+    
+    #Set the xlabel range.
+    xmin, xmax = ax.get_xlim()
+    if datamin is not None:
+        xmin = datamin
+    if datamax is not None:
+        xmax = datamax
+    ax.set_xlim([xmin,xmax])
+    
+    #Add the title if provided.
+    if title is not None:
+        ax.set_title(title)
+
+    return
