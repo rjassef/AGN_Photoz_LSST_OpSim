@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import re
 import astropy.units as u
+from textwrap import wrap
 
 import matplotlib._color_data as mcd
 
@@ -154,7 +155,8 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
                               healpix_pixarea=6.391586616190171e-05*u.sr, 
                               figsize=(10, 15), dpi=200, FBS=None, datamin=None, 
                               datamax=None, title=None, bins=60, ymin_use=None, ymax_use=None, 
-                              percentile=10):
+                              percentile=10, top_axis=False, data_func_top=None, 
+                              top_xlabel=None):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -240,7 +242,7 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
         run = runs[order]
         if run in labels_raw:
             k = np.argwhere(labels_raw==run)[0][0]
-            labels.append(labels_raw[k])
+            labels.append('\n'.join(wrap(labels_raw[k],35)))
             handles.append(handles_raw[k])
     
     # label & legend
@@ -260,7 +262,7 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
     
     y_vals = ax.get_yticks()
     ax.set_yticklabels(['{:.0f}'.format(x * healpix_pixarea.to(u.deg**2).value) for x in y_vals], rotation=90)
-    ax.set_ylabel('Area ($\mathrm{degree^{2}}$)', labelpad=7)
+    ax.set_ylabel('Area ($\mathrm{degree^{2}}$)', fontsize=12, labelpad=7)
         
     #Set the xlabel range.
     xmin, xmax = ax.get_xlim()
@@ -273,6 +275,16 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
     #Add the title if provided.
     if title is not None:
         ax.set_title(title)
+    
+    if top_axis:
+        ax2 = ax.twiny()
+        xlim = ax.get_xlim()
+        if data_func_top is not None:
+            xlim = data_func_top(xlim)
+        ax2.set_xlim(xlim)
+        #ax2.set_xticks(new_tick_locations)
+        ax2.set_xlabel(top_xlabel, fontsize=12, labelpad=7)
+
     
 ####
 
