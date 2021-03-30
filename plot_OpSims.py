@@ -156,7 +156,7 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
                               figsize=(10, 15), dpi=200, FBS=None, datamin=None, 
                               datamax=None, title=None, bins=60, ymin_use=None, ymax_use=None, 
                               percentile=10, top_axis=False, data_func_top=None, 
-                              top_xlabel=None):
+                              top_xlabel=None, survey_label=None, legend_box_in_plot=False):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -249,7 +249,11 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
     ax.set_xlabel(xlabel, fontsize=12)
     ncol_legend = 1
     #ncol_legend = 1 + int(len(mds[])/60.)
-    ax.legend(handles, labels, fontsize=7.5, bbox_to_anchor=(1.0, 1.0), 
+    if legend_box_in_plot:
+        bbox_to_anchor=None
+    else:
+        bbox_to_anchor=(1.0, 1.0)
+    ax.legend(handles, labels, fontsize=7.5, bbox_to_anchor=bbox_to_anchor, 
               edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
     
     #Set the y-limit range and then the y ticks. 
@@ -285,7 +289,12 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
         #ax2.set_xticks(new_tick_locations)
         ax2.set_xlabel(top_xlabel, fontsize=12, labelpad=7)
 
-    
+    if survey_label is not None:
+        ax.annotate(survey_label,
+            xy=(0.125, 0.85), xycoords='figure fraction',
+            horizontalalignment='left', verticalalignment='top',
+            fontsize=14)
+  
 ####
 
 def plot_OpSims_color_excess_redshift_extremes(Key, bundleDicts_input, zs, quasar_colors, 
