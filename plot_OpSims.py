@@ -250,10 +250,12 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
     ncol_legend = 1
     #ncol_legend = 1 + int(len(mds[])/60.)
     if legend_box_in_plot:
-        bbox_to_anchor=None
+        bbox_to_anchor=(0.03, 0.90)
+        fontsize=5.0
     else:
         bbox_to_anchor=(1.0, 1.0)
-    ax.legend(handles, labels, fontsize=7.5, bbox_to_anchor=bbox_to_anchor, 
+        fontsize=7.5
+    ax.legend(handles, labels, fontsize=fontsize, bbox_to_anchor=bbox_to_anchor, 
               edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
     
     #Set the y-limit range and then the y ticks. 
@@ -265,7 +267,8 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
     ax.set_ylim([ymin, ymax])
     
     y_vals = ax.get_yticks()
-    ax.set_yticklabels(['{:.0f}'.format(x * healpix_pixarea.to(u.deg**2).value) for x in y_vals], rotation=90)
+    pixarea = healpix_pixarea.to(u.deg**2).value
+    ax.set_yticklabels(['{:.0f}'.format(x * pixarea) for x in y_vals], rotation=90)
     ax.set_ylabel('Area ($\mathrm{degree^{2}}$)', fontsize=12, labelpad=7)
         
     #Set the xlabel range.
@@ -290,8 +293,14 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
         ax2.set_xlabel(top_xlabel, fontsize=12, labelpad=7)
 
     if survey_label is not None:
+        if legend_box_in_plot:
+            xloc = 0.17
+            yloc = 0.85
+        else:
+            xloc = 0.125
+            yloc = 0.85
         ax.annotate(survey_label,
-            xy=(0.125, 0.85), xycoords='figure fraction',
+            xy=(xloc, yloc), xycoords='figure fraction',
             horizontalalignment='left', verticalalignment='top',
             fontsize=14)
   
