@@ -156,7 +156,8 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
                               figsize=(10, 15), dpi=200, FBS=None, datamin=None, 
                               datamax=None, title=None, bins=60, ymin_use=None, ymax_use=None, 
                               percentile=10, top_axis=False, data_func_top=None, 
-                              top_xlabel=None, survey_label=None, legend_box_in_plot=False):
+                              top_xlabel=None, survey_label=None, legend_box_in_plot=False, 
+                              bbox_x=None, bbox_y=None):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -250,7 +251,11 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
     ncol_legend = 1
     #ncol_legend = 1 + int(len(mds[])/60.)
     if legend_box_in_plot:
-        bbox_to_anchor=(0.03, 0.90)
+        if bbox_x is None:
+            bbox_x = 0.03
+        if bbox_y is None:
+            bbox_y = 0.90
+        bbox_to_anchor=(bbox_x, bbox_y)
         fontsize=5.0
     else:
         bbox_to_anchor=(1.0, 1.0)
