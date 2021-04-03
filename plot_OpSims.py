@@ -538,7 +538,8 @@ def plot_OpSims_Nqso_hist(Key, bundleDicts_input, xlabel=None, figsize=(10, 15),
 ###
 
 def plot_OpSims_Nqso_hist_v2(Key, Nqso, xlabel=None, figsize=(5, 10), dpi=200,
-                             datamin=None, datamax=None, bins=60, title=None):
+                             datamin=None, datamax=None, bins=60, title=None, 
+                             survey_label=None):
       
     #Make a histogram of Nqso. 
     density = False
@@ -561,4 +562,13 @@ def plot_OpSims_Nqso_hist_v2(Key, Nqso, xlabel=None, figsize=(5, 10), dpi=200,
     if title is not None:
         ax.set_title(title)
 
+    if survey_label is not None:
+        xloc = 0.125
+        yloc = 0.85
+        ax.annotate(survey_label,
+            xy=(xloc, yloc), xycoords='figure fraction',
+            horizontalalignment='left', verticalalignment='top',
+            fontsize=14)
+
+        
     return
