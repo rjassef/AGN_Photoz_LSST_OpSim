@@ -157,7 +157,7 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
                               datamax=None, title=None, bins=60, ymin_use=None, ymax_use=None, 
                               percentile=10, top_axis=False, data_func_top=None, 
                               top_xlabel=None, survey_label=None, legend_box_in_plot=False, 
-                              bbox_x=None, bbox_y=None):
+                              bbox_x=None, bbox_y=None, legend_fontsize=None):
     
     #First, select the runs to use by FBS version if requested.
     if FBS is None:
@@ -256,11 +256,13 @@ def plot_OpSims_hist_extremes(Key, bundleDicts_input, order_func=get_metric_medi
         if bbox_y is None:
             bbox_y = 0.90
         bbox_to_anchor=(bbox_x, bbox_y)
-        fontsize=5.0
+        if legend_fontsize is None:
+            legend_fontsize=5.0
     else:
         bbox_to_anchor=(1.0, 1.0)
-        fontsize=7.5
-    ax.legend(handles, labels, fontsize=fontsize, bbox_to_anchor=bbox_to_anchor, 
+        if legend_fontsize is None:
+            legend_fontsize=7.5
+    ax.legend(handles, labels, fontsize=legend_fontsize, bbox_to_anchor=bbox_to_anchor, 
               edgecolor='k', loc=2, labelspacing=0.45, ncol=ncol_legend)
     
     #Set the y-limit range and then the y ticks. 
