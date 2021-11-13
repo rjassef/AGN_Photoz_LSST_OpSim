@@ -59,8 +59,7 @@ zmin = 0.1
 zmax = np.min([7.0, (lam_eff[LSSTfilter]/(912.*u.AA)).to(1.).value])
 z  = np.arange(zmin, zmax+0.1*dz, dz)
 #z  = np.arange(0.1, 7.0, 0.1)
-#m  = np.arange(15.7, 26.3, 0.1)
-m = np.arange(10.0, 28.0, 0.1)
+m  = np.arange(15.7, 26.3, 0.1)
 
 #z  = np.arange(5.0, 6.0, 0.2)
 #z  = np.arange(1.0, 2.0, 0.2)
